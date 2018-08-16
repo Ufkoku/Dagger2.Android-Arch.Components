@@ -26,7 +26,7 @@ abstract class AppFragment : Fragment(), HasSupportFragmentInjector {
     protected lateinit var childFragmentInjector: DispatchingAndroidInjector<Fragment>
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        this.savedInstanceState = this.savedInstanceState
+        this.savedInstanceState = savedInstanceState
 
         AndroidSupportInjection.inject(this)
 
