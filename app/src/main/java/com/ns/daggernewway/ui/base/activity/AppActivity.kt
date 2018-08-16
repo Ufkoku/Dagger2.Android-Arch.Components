@@ -36,7 +36,7 @@ abstract class AppActivity : AppCompatActivity(), HasSupportFragmentInjector {
 
     override fun onSaveInstanceState(outState: Bundle) {
         getAttachedViewModels().filter { it.value is SavableViewModel }
-                .forEach { (it.value as SavableViewModel).save(this, outState) }
+                .forEach { (it.value as SavableViewModel).save(outState) }
 
         super.onSaveInstanceState(outState)
     }

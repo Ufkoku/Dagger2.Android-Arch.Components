@@ -4,7 +4,6 @@ import android.app.Application
 import android.os.Bundle
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModelStoreOwner
 import com.ns.daggernewway.entity.rest.Comment
 import com.ns.daggernewway.entity.ui.FullPost
 import com.ns.daggernewway.interactor.getcomments.IGetCommentsInteractor
@@ -38,16 +37,15 @@ class CommentsViewModel : SavableViewModel {
 
     constructor(app: Application,
                 interactor: IGetCommentsInteractor,
-                owner: ViewModelStoreOwner,
-                savedInstanceState: Bundle) : super(app, owner, savedInstanceState) {
+                savedInstanceState: Bundle) : super(app, savedInstanceState) {
         this.interactor = interactor
     }
 
-    override fun save(bundle: Bundle) {
+    override fun saveInner(bundle: Bundle) {
         CommentsViewModelSaver.save(this, bundle)
     }
 
-    override fun restore(bundle: Bundle) {
+    override fun restoreInner(bundle: Bundle) {
         CommentsViewModelSaver.restore(this, bundle)
     }
 

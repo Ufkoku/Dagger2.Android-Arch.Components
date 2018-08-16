@@ -30,22 +30,20 @@ class PostCommentsModule {
     @FragmentScope
     fun providePostCommentsViewModelFactory(app: App,
                                             interactor: IGetCommentsInteractor,
-                                            fragment: PostCommentsFragment,
                                             @Named(ArgumentExtractorModule.QUALIFIER) fullPost: FullPost?,
                                             @Named(ArgumentExtractorModule.QUALIFIER) savedInstanceState: Bundle?): PostCommentsViewModelFactory {
-        return PostCommentsViewModelFactory(app, interactor, fragment, fullPost, savedInstanceState)
+        return PostCommentsViewModelFactory(app, interactor, fullPost, savedInstanceState)
     }
 
     class PostCommentsViewModelFactory(private val app: App,
                                        private val interactor: IGetCommentsInteractor,
-                                       private val postCommentsFragment: PostCommentsFragment,
                                        private val fullPost: FullPost?,
                                        private val savedInstanceState: Bundle?) : ViewModelProvider.Factory {
 
         @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             return (when {
-                savedInstanceState != null -> CommentsViewModel(app, interactor, postCommentsFragment, savedInstanceState)
+                savedInstanceState != null -> CommentsViewModel(app, interactor, savedInstanceState)
                 fullPost != null -> CommentsViewModel(app, interactor, fullPost)
                 else -> throw IllegalArgumentException("Unable to initialize view model")
             }) as T
