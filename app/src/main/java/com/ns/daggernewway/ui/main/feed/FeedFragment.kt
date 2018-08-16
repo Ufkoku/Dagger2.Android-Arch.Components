@@ -46,6 +46,7 @@ class FeedFragment : AppFragment(), OnItemClickListener<FullPost> {
     override fun onItemClicked(item: FullPost) {
         fragmentManager?.beginTransaction()
                 ?.replace(R.id.mainRoot, PostCommentsFragment.getInstance(item))
+                ?.addToBackStack(null)
                 ?.commit()
     }
 
