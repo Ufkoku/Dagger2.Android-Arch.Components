@@ -13,13 +13,6 @@ abstract class DaggerArchActivity : AppCompatActivity(), HasSupportFragmentInjec
 
     protected var savedInstanceState: Bundle? = null
         private set
-        get() {
-            return if (field == null) {
-                null
-            } else {
-                return Bundle(field)
-            }
-        }
 
     @Inject
     protected lateinit var supportFragmentInjector: DispatchingAndroidInjector<Fragment>
@@ -39,7 +32,7 @@ abstract class DaggerArchActivity : AppCompatActivity(), HasSupportFragmentInjec
         super.onSaveInstanceState(outState)
     }
 
-    override fun supportFragmentInjector(): AndroidInjector<Fragment>? {
+    override fun supportFragmentInjector(): AndroidInjector<Fragment> {
         return supportFragmentInjector
     }
 

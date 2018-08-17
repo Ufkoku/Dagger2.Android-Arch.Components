@@ -12,13 +12,6 @@ abstract class DaggerArchFragment : Fragment(), HasSupportFragmentInjector {
 
     protected var savedInstanceState: Bundle? = null
         private set
-        get() {
-            return if (field == null) {
-                null
-            } else {
-                return Bundle(field)
-            }
-        }
 
     @Inject
     protected lateinit var childFragmentInjector: DispatchingAndroidInjector<Fragment>
