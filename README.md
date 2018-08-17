@@ -30,6 +30,6 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.ufkoku:dagger2-arch-components:1.0.0'
+    implementation 'com.ufkoku:dagger2-arch-components:1.0.1'
 }
 ```
