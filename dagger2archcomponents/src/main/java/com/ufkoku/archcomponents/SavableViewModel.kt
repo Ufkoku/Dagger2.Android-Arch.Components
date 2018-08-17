@@ -1,14 +1,14 @@
-package com.ns.daggernewway.ui.base.viewmodel
+package com.ufkoku.archcomponents
 
 import android.os.Bundle
 import androidx.lifecycle.ViewModel
 
+@Suppress("CanBePrimaryConstructorProperty")
 abstract class SavableViewModel(bundleSuffix: String = "") : ViewModel() {
 
     /**
      * Allows you to use two models of same instance attached to single component
      * */
-    @Suppress("CanBePrimaryConstructorProperty")
     private val bundleSuffix = bundleSuffix
 
     private val bundleKey: String by lazy {

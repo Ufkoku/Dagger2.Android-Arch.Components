@@ -9,14 +9,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.ns.daggernewway.R
 import com.ns.daggernewway.di.common.scopes.FragmentScope
 import com.ns.daggernewway.entity.ui.FullPost
-import com.ns.daggernewway.ui.base.fragment.AppFragment
+import com.ufkoku.archcomponents.DaggerArchFragment
 import dagger.Module
 import dagger.Provides
 import kotlinx.android.synthetic.main.fragment_comments.*
 import javax.inject.Inject
 import javax.inject.Named
 
-class PostCommentsFragment : AppFragment() {
+class PostCommentsFragment : DaggerArchFragment() {
 
     @Inject
     protected lateinit var viewModel: CommentsViewModel

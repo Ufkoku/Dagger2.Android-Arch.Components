@@ -1,0 +1,74 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'org.jetbrains.dokka-android'
+
+dokka {
+    outputFormat = "javadoc"
+    outputDirectory = "$buildDir/docs/javadoc"
+    linkMapping {
+        dir = "src/main/kotlin"
+        url = "https://github.com/Ufkoku/AndroidMVPHelper/tree/master/daggerarchcomponents/src/main/java"
+        suffix = "#L"
+    }
+}
+
+tasks.whenTaskAdded{ task ->
+    if (task.name == 'javadoc'){
+        task.dependsOn 'dokka'
+    }
+}
+
+ext {
+    bintrayRepo = 'maven'
+    bintrayName = 'dagger2-arch-components'
+
+    publishedGroupId = 'com.ufkoku'
+    libraryName = libraryName
+    artifact = 'dagger2-arch-components'
+
+    libraryDescription = 'Contains Basic Classes for architecture implementation'
+
+    siteUrl = gitUrl
+    gitUrl = gitUrl
+
+    libraryVersion = version_name
+
+    developerId = 'ufkoku'
+    developerName = 'Sizyntsev Mykyta'
+    developerEmail = 'ufkoku@gmail.com'
+
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
+}
+
+android {
+    compileSdkVersion Integer.parseInt(compileApiVersion)
+    defaultConfig {
+        minSdkVersion Integer.parseInt(minApiVersion)
+        targetSdkVersion Integer.parseInt(compileApiVersion)
+        versionCode Integer.parseInt(version_code)
+        versionName version_name
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    implementation "androidx.appcompat:appcompat:$androidx_app_compat_version"
+
+    implementation "androidx.lifecycle:lifecycle-viewmodel:$lifecycle_version"
+
+    implementation "com.google.dagger:dagger-android-support:$dagger_version"
+}

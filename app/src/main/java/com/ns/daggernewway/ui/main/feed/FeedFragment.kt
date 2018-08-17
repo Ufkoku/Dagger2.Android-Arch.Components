@@ -8,13 +8,13 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ns.daggernewway.R
 import com.ns.daggernewway.entity.ui.FullPost
-import com.ns.daggernewway.ui.base.fragment.AppFragment
+import com.ufkoku.archcomponents.DaggerArchFragment
 import com.ns.daggernewway.ui.main.post.PostCommentsFragment
 import com.ns.daggernewway.ui.utils.recyclerview.OnItemClickListener
 import kotlinx.android.synthetic.main.fragment_feed.*
 import javax.inject.Inject
 
-class FeedFragment : AppFragment(), OnItemClickListener<FullPost> {
+class FeedFragment : DaggerArchFragment(), OnItemClickListener<FullPost> {
 
     @Inject
     protected lateinit var viewModel: FeedViewModel

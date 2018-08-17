@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import com.ns.daggernewway.entity.rest.Comment
 import com.ns.daggernewway.entity.ui.FullPost
 import com.ns.daggernewway.interactor.getcomments.IGetCommentsInteractor
-import com.ns.daggernewway.ui.base.viewmodel.SavableViewModel
+import com.ufkoku.archcomponents.SavableViewModel
 import com.ufkoku.mvp.viewstate.autosavable.AutoSavable
 import com.ufkoku.mvp.viewstate.autosavable.DontSave
 import io.reactivex.android.schedulers.AndroidSchedulers

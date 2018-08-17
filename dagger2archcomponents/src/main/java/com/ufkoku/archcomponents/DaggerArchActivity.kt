@@ -1,16 +1,15 @@
-package com.ns.daggernewway.ui.base.fragment
+package com.ufkoku.archcomponents
 
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import com.ns.daggernewway.ui.base.viewmodel.SavableViewModel
-import com.ns.daggernewway.ui.utils.viewmodel.getAttachedViewModels
+import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
-import dagger.android.support.AndroidSupportInjection
 import dagger.android.support.HasSupportFragmentInjector
 import javax.inject.Inject
 
-abstract class AppFragment : Fragment(), HasSupportFragmentInjector {
+abstract class DaggerArchActivity : AppCompatActivity(), HasSupportFragmentInjector {
 
     protected var savedInstanceState: Bundle? = null
         private set
@@ -23,12 +22,12 @@ abstract class AppFragment : Fragment(), HasSupportFragmentInjector {
         }
 
     @Inject
-    protected lateinit var childFragmentInjector: DispatchingAndroidInjector<Fragment>
+    protected lateinit var supportFragmentInjector: DispatchingAndroidInjector<Fragment>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         this.savedInstanceState = savedInstanceState
 
-        AndroidSupportInjection.inject(this)
+        AndroidInjection.inject(this)
 
         super.onCreate(savedInstanceState)
     }
@@ -40,8 +39,8 @@ abstract class AppFragment : Fragment(), HasSupportFragmentInjector {
         super.onSaveInstanceState(outState)
     }
 
-    override fun supportFragmentInjector(): AndroidInjector<Fragment> {
-        return childFragmentInjector
+    override fun supportFragmentInjector(): AndroidInjector<Fragment>? {
+        return supportFragmentInjector
     }
 
 }
