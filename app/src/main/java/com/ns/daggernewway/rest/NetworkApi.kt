@@ -3,7 +3,6 @@ package com.ns.daggernewway.rest
 import com.ns.daggernewway.entity.rest.Comment
 import com.ns.daggernewway.entity.rest.Post
 import com.ns.daggernewway.entity.rest.User
-import io.reactivex.Observable
 import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Path

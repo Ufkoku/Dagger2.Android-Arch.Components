@@ -10,7 +10,6 @@ import com.ns.daggernewway.R
 import com.ns.daggernewway.di.common.scopes.FragmentScope
 import com.ns.daggernewway.entity.ui.FullPost
 import com.ns.daggernewway.ui.base.fragment.AppFragment
-import com.ns.daggernewway.ui.main.feed.FeedAdapter
 import dagger.Module
 import dagger.Provides
 import kotlinx.android.synthetic.main.fragment_comments.*

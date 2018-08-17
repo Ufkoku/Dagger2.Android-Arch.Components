@@ -5,8 +5,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.ns.daggernewway.di.common.scopes.FragmentScope
 import com.ns.daggernewway.interactor.getfeed.IGetFeedInteractor
-import com.ns.daggernewway.ui.main.feed.FeedViewModel
 import com.ns.daggernewway.ui.main.feed.FeedFragment
+import com.ns.daggernewway.ui.main.feed.FeedViewModel
 import dagger.Module
 import dagger.Provides
 

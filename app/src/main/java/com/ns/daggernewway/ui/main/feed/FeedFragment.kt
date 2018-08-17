@@ -11,7 +11,6 @@ import com.ns.daggernewway.entity.ui.FullPost
 import com.ns.daggernewway.ui.base.fragment.AppFragment
 import com.ns.daggernewway.ui.main.post.PostCommentsFragment
 import com.ns.daggernewway.ui.utils.recyclerview.OnItemClickListener
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_feed.*
 import javax.inject.Inject
 
