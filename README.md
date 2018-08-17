@@ -22,7 +22,7 @@ Example of usage of Dagger.Android and Architecture compomponents
 
 ## Usage as library
 
-You can add `dagger2archcomponents` module as dependency via maven:
+You can add `dagger2-arch-components` module as dependency via maven:
 
 ```gradle
 repositories {
