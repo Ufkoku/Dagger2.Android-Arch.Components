@@ -1,6 +1,5 @@
 package com.ns.daggernewway.ui.main.post
 
-import android.app.Application
 import android.os.Bundle
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -28,16 +27,14 @@ class CommentsViewModel : SavableViewModel {
     @DontSave
     private var getCommentsDisposable: Disposable? = null
 
-    constructor(app: Application,
-                interactor: IGetCommentsInteractor,
-                post: FullPost) : super(app) {
+    constructor(interactor: IGetCommentsInteractor,
+                post: FullPost) : super() {
         this.interactor = interactor
         this.post = post
     }
 
-    constructor(app: Application,
-                interactor: IGetCommentsInteractor,
-                savedInstanceState: Bundle) : super(app, savedInstanceState) {
+    constructor(interactor: IGetCommentsInteractor,
+                savedInstanceState: Bundle) : super(savedInstanceState) {
         this.interactor = interactor
     }
 

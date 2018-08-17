@@ -1,11 +1,9 @@
 package com.ns.daggernewway.ui.base.viewmodel
 
-import android.app.Application
 import android.os.Bundle
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 
-abstract class SavableViewModel(app: Application,
-                                bundleSuffix: String = "") : AndroidViewModel(app) {
+abstract class SavableViewModel(bundleSuffix: String = "") : ViewModel() {
 
     /**
      * Allows you to use two models of same instance attached to single component
@@ -23,9 +21,8 @@ abstract class SavableViewModel(app: Application,
 
     }
 
-    constructor(app: Application,
-                savedInstanceState: Bundle,
-                bundleSuffix: String = "") : this(app, bundleSuffix) {
+    constructor(savedInstanceState: Bundle,
+                bundleSuffix: String = "") : this(bundleSuffix) {
         restore(savedInstanceState)
     }
 
