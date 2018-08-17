@@ -1,1 +1,1 @@
-include ':app', ':dagger2archcomponents'
+include ':app', ':dagger2-arch-components'
