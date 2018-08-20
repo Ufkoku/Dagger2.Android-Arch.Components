@@ -16,7 +16,7 @@ Example of usage of Dagger.Android and Architecture compomponents
 1. Each component has minimum two Dagger2 modules:
     * The [first one](https://github.com/Ufkoku/Dagger2.Android-Arch.Components/blob/master/app/src/main/java/com/ns/daggernewway/di/postcomments/PostCommentsInjectorModule.kt) for subcomponent generation;
     * [Other](https://github.com/Ufkoku/Dagger2.Android-Arch.Components/blob/master/app/src/main/java/com/ns/daggernewway/di/postcomments/PostCommentsModule.kt) for dependencies providing;
-2. For `ViewModel` initialization from parameters or saved state, you need to provide them some how. Define a [nested module](https://github.com/Ufkoku/Dagger2.Android-Arch.Components/blob/abbf0e43fabbdea367ec200592db5f0cd1959947/app/src/main/java/com/ns/daggernewway/ui/main/post/PostCommentsFragment.kt#L61) in `Fragment` or `Activity` for this! 
+2. For `ViewModel` initialization from parameters or saved state, you need to provide them some how. Define a [nested module](https://github.com/Ufkoku/Dagger2.Android-Arch.Components/blob/master/app/src/main/java/com/ns/daggernewway/ui/main/post/PostCommentsFragment.kt#L61) in `Fragment` or `Activity` for this! 
     * Use `include` to attach nested module to [dependency provider module]((https://github.com/Ufkoku/Dagger2.Android-Arch.Components/blob/master/app/src/main/java/com/ns/daggernewway/di/postcomments/PostCommentsModule.kt)).
     * *Note*: Use `@Named` or other *qualifiers* to provide arguments and `savedInstanceState` to prevent dependency conflicts.
 
