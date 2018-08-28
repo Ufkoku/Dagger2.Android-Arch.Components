@@ -5,41 +5,42 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.ns.daggernewway.entity.ui.FullPost
 import com.ns.daggernewway.interactor.getfeed.IGetFeedInteractor
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposable
+import kotlinx.coroutines.experimental.CommonPool
+import kotlinx.coroutines.experimental.Job
+import kotlinx.coroutines.experimental.android.UI
+import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.experimental.withContext
+import java.io.IOException
 
 class FeedViewModel(private val interactor: IGetFeedInteractor) : ViewModel() {
 
-    private lateinit var liveData: MutableLiveData<List<FullPost>>
+    private lateinit var feed: MutableLiveData<List<FullPost>>
 
-    private var loadFeedDisposable: Disposable? = null
+    private var loadFeedJob: Job? = null
 
     fun getFeed(): LiveData<List<FullPost>> {
-        if (!::liveData.isInitialized) {
-            liveData = MutableLiveData()
+        if (!::feed.isInitialized) {
+            feed = MutableLiveData()
             loadFeed()
         }
-        return liveData
+        return feed
     }
 
     private fun loadFeed() {
-        loadFeedDisposable?.dispose()
+        loadFeedJob?.cancel()
 
-        loadFeedDisposable = interactor.getFeed()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { res, ex ->
-                    if (res != null) {
-                        liveData.value = res
-                    } else if (ex != null) {
-                        //handle ex
-                    }
-                }
-
+        loadFeedJob = launch(UI) {
+            try {
+                feed.value = withContext(CommonPool) { interactor.getFeed() }
+            } catch (ex: IOException) {
+                ex.printStackTrace()
+            }
+        }
     }
 
     override fun onCleared() {
         super.onCleared()
-        loadFeedDisposable?.dispose()
+        loadFeedJob?.cancel()
     }
 
 }

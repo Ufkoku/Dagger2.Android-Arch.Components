@@ -1,13 +1,12 @@
 package com.ns.daggernewway.di.app.beans
 
+import com.jakewharton.retrofit2.adapter.kotlin.coroutines.experimental.CoroutineCallAdapterFactory
 import com.ns.daggernewway.rest.NetworkApi
 import dagger.Module
 import dagger.Provides
 import dagger.Reusable
-import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
@@ -18,11 +17,11 @@ class RetrofitModule {
     @Singleton
     fun provideRetrofit(okHttpClient: OkHttpClient,
                         gsonConverterFactory: GsonConverterFactory,
-                        rxJava2CallAdapterFactory: RxJava2CallAdapterFactory): Retrofit {
+                        callAdapterFactory: CoroutineCallAdapterFactory): Retrofit {
         return Retrofit.Builder()
                 .baseUrl("https://jsonplaceholder.typicode.com")
                 .addConverterFactory(gsonConverterFactory)
-                .addCallAdapterFactory(rxJava2CallAdapterFactory)
+                .addCallAdapterFactory(callAdapterFactory)
                 .client(okHttpClient)
                 .build()
     }
@@ -41,8 +40,8 @@ class RetrofitModule {
 
     @Provides
     @Reusable
-    fun provideRx2CallAdapterFactory(): RxJava2CallAdapterFactory {
-        return RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io())
+    fun provideKotlinCoroutineCallAdapterFactory(): CoroutineCallAdapterFactory {
+        return CoroutineCallAdapterFactory()
     }
 
 }

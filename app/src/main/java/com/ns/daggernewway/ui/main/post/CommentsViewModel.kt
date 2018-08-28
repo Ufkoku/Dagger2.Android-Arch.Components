@@ -9,8 +9,12 @@ import com.ns.daggernewway.interactor.getcomments.IGetCommentsInteractor
 import com.ufkoku.archcomponents.SavableViewModel
 import com.ufkoku.mvp.viewstate.autosavable.AutoSavable
 import com.ufkoku.mvp.viewstate.autosavable.DontSave
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposable
+import kotlinx.coroutines.experimental.CommonPool
+import kotlinx.coroutines.experimental.Job
+import kotlinx.coroutines.experimental.android.UI
+import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.experimental.withContext
+import java.io.IOException
 
 @AutoSavable(includeSuper = false)
 class CommentsViewModel : SavableViewModel {
@@ -25,7 +29,7 @@ class CommentsViewModel : SavableViewModel {
     private lateinit var comments: MutableLiveData<List<Comment>>
 
     @DontSave
-    private var getCommentsDisposable: Disposable? = null
+    private var loadJob: Job? = null
 
     constructor(interactor: IGetCommentsInteractor,
                 post: FullPost) : super() {
@@ -55,22 +59,20 @@ class CommentsViewModel : SavableViewModel {
     }
 
     private fun loadComments() {
-        getCommentsDisposable?.dispose()
+        loadJob?.cancel()
 
-        getCommentsDisposable = interactor.getComments(post.id)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { res, ex ->
-                    if (res != null) {
-                        comments.value = res
-                    } else if (ex != null) {
-                        //handle ex
-                    }
-                }
+        loadJob = launch(UI) {
+            try {
+                comments.value = withContext(CommonPool) { interactor.getComments(post.id) }
+            } catch (ex: IOException) {
+                ex.printStackTrace()
+            }
+        }
     }
 
     override fun onCleared() {
         super.onCleared()
-        getCommentsDisposable?.dispose()
+        loadJob?.cancel()
     }
 
 }

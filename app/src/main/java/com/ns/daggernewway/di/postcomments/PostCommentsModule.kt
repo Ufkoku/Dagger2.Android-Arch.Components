@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-import com.ns.daggernewway.App
 import com.ns.daggernewway.di.common.scopes.FragmentScope
 import com.ns.daggernewway.entity.ui.FullPost
 import com.ns.daggernewway.interactor.getcomments.IGetCommentsInteractor

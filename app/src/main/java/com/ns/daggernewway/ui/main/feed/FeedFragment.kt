@@ -8,9 +8,9 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ns.daggernewway.R
 import com.ns.daggernewway.entity.ui.FullPost
-import com.ufkoku.archcomponents.DaggerArchFragment
 import com.ns.daggernewway.ui.main.post.PostCommentsFragment
 import com.ns.daggernewway.ui.utils.recyclerview.OnItemClickListener
+import com.ufkoku.archcomponents.DaggerArchFragment
 import kotlinx.android.synthetic.main.fragment_feed.*
 import javax.inject.Inject
 
