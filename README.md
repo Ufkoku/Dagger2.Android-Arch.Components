@@ -1,6 +1,6 @@
 # Dagger2.Android + Arch.Components  
   
-Example of usage of Dagger.Android and Architecture compomponents  
+Example of usage of Dagger.Android and Architecture components
   
 ## Main ideas  
 1. Create an architecture with [savable](https://developer.android.com/topic/libraries/architecture/saving-states) to `Bundle` `ViewModels`;
@@ -30,6 +30,6 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.ufkoku:dagger2-arch-components:1.0.1'
+    implementation 'com.ufkoku:dagger2-arch-components:1.0.2'
 }
 ```
