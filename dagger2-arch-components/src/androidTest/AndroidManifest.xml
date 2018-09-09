@@ -1,0 +1,16 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.ufkoku.archcomponents">
+
+    <application android:name=".testable.TestableApplication">
+
+        <activity
+            android:name=".testable.TestableActivity"
+            android:theme="@style/Theme.AppCompat" />
+
+        <activity
+            android:name=".testable.TestableFragmentHolderActivity"
+            android:theme="@style/Theme.AppCompat" />
+
+    </application>
+
+</manifest>
