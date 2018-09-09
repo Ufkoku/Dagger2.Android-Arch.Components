@@ -12,13 +12,12 @@ abstract class SavableViewModel(bundleSuffix: String = "") : ViewModel() {
     private val bundleSuffix = bundleSuffix
 
     private val bundleKey: String by lazy {
-        val basicKey = javaClass.canonicalName!!
+        val basicKey = javaClass.simpleName
         if (this.bundleSuffix.isEmpty()) {
             basicKey
         } else {
             "$basicKey$${this.bundleSuffix}"
         }
-
     }
 
     constructor(savedInstanceState: Bundle,

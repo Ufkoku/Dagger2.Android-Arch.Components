@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelStore
 import androidx.lifecycle.ViewModelStoreOwner
 import java.lang.reflect.Field
-import java.util.*
 
 private val fViewModelMap: Field by lazy {
     ViewModelStore::class.java
@@ -28,10 +27,6 @@ fun ViewModelStore.contains(viewModel: ViewModel): String? {
 
 @Suppress("UNCHECKED_CAST")
 fun ViewModelStore.getViewModels(): Set<Map.Entry<String, ViewModel>> {
-    val map = fViewModelMap.get(this) as Map<*, *>?
-    return if (map == null) {
-        Collections.emptySet()
-    } else {
-        map.entries as Set<Map.Entry<String, ViewModel>>
-    }
+    val map = fViewModelMap.get(this) as Map<String, ViewModel>
+    return map.entries
 }
