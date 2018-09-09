@@ -33,19 +33,18 @@ dependencies {
     implementation project(":dagger2-arch-components")
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:0.25.0"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlin_coroutines_version"
 
     implementation "androidx.appcompat:appcompat:$androidx_app_compat_version"
     implementation "androidx.recyclerview:recyclerview:$androidx_app_compat_version"
-    implementation "androidx.constraintlayout:constraintlayout:1.1.2"
 
-    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
-    implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-extensions:$androidx_lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-common-java8:$androidx_lifecycle_version"
 
     def retrofit_ver = "2.4.0"
     implementation "com.squareup.retrofit2:retrofit:$retrofit_ver"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_ver"
-    implementation 'com.jakewharton.retrofit:retrofit2-kotlin-coroutines-experimental-adapter:1.0.0'
+    implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-experimental-adapter:$retrofit_coroutines_adapter_version"
 
     implementation "com.google.dagger:dagger:$dagger_version"
     implementation "com.google.dagger:dagger-android-support:$dagger_version"
