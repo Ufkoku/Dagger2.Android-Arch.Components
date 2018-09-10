@@ -5,6 +5,7 @@ Example of usage of Dagger.Android and Architecture components
 ## Main ideas  
 1. Create an architecture with [savable](https://developer.android.com/topic/libraries/architecture/saving-states) to `Bundle` `ViewModels`;
 2. Move `ViewModel` initialization to Dagger2.Android modules;
+3. Totally incapsulate `ViewModel` managment logic from final Activity/Fragment.
 
 ## Main classes and key parts  
 1. [DaggerArchActivity](https://github.com/Ufkoku/Dagger2.Android-Arch.Components/blob/master/dagger2-arch-components/src/main/java/com/ufkoku/archcomponents/DaggerArchActivity.kt) which is base class for activities in the app. It saves provided `savedInstanceState` to use it for `ViewModel` initialization. Also it implements Dagger2.Android injections. And uses its `ViewModelStore` to save attached `ViewModel`s to Bundle;
