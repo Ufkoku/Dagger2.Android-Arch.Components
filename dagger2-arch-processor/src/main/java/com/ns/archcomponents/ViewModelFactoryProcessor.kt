@@ -181,7 +181,7 @@ class ViewModelFactoryProcessor : AbstractProcessor() {
     private fun collectConstructorDataSorted(typeElement: TypeElement,
                                              declaredType: DeclaredType): List<ConstructorData> {
         return typeElement.enclosedElements
-                .filter { it.kind == ElementKind.CONSTRUCTOR }
+                .filter { it.kind == ElementKind.CONSTRUCTOR && it.modifiers.contains(Modifier.PUBLIC) }
                 .map {
                     val priorityAnn = it.getAnnotation(ConstructorPriority::class.java)
                     val priority = priorityAnn?.priority ?: Int.MAX_VALUE
