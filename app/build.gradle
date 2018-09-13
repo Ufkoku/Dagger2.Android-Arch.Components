@@ -31,6 +31,8 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
     implementation project(":dagger2-arch-components")
+    implementation project (":dagger2-arch-annotations")
+    kapt project (":dagger2-arch-processor")
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlin_coroutines_version"
@@ -54,6 +56,10 @@ dependencies {
     def mvp_ver = "4.0.7"
     implementation("com.ufkoku.mvp:mvp_autosavable_annotation:$mvp_ver")
     kapt("com.ufkoku.mvp:mvp_autosavable:$mvp_ver")
+}
+
+kapt {
+    correctErrorTypes = true
 }
 
 androidExtensions {

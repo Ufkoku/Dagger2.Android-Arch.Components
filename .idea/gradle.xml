@@ -9,7 +9,9 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/dagger2-arch-annotations" />
             <option value="$PROJECT_DIR$/dagger2-arch-components" />
+            <option value="$PROJECT_DIR$/dagger2-arch-processor" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

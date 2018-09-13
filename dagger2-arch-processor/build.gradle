@@ -1,0 +1,41 @@
+apply plugin: 'java-library'
+apply plugin: 'kotlin'
+
+ext {
+    bintrayRepo = 'maven'
+    bintrayName = 'dagger2-arch-processor'
+
+    publishedGroupId = 'com.ufkoku'
+    libraryName = libraryName
+    artifact = 'dagger2-arch-processor'
+
+    libraryDescription = 'Contains processor for architecture implementation'
+
+    siteUrl = gitUrl
+    gitUrl = gitUrl
+
+    libraryVersion = version_name
+
+    developerId = 'ufkoku'
+    developerName = 'Sizyntsev Mykyta'
+    developerEmail = 'ufkoku@gmail.com'
+
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    implementation 'com.squareup:javapoet:1.11.1'
+
+    implementation project(":dagger2-arch-annotations")
+}
+
+sourceCompatibility = "8"
+targetCompatibility = "8"
+
+apply from: '../installv1.gradle'
+apply from: '../bintrayv1.gradle'

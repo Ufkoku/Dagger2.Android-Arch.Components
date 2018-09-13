@@ -1,12 +1,11 @@
 package com.ns.daggernewway.di.feed
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.ns.daggernewway.di.common.scopes.FragmentScope
 import com.ns.daggernewway.interactor.getfeed.IGetFeedInteractor
 import com.ns.daggernewway.ui.main.feed.FeedFragment
 import com.ns.daggernewway.ui.main.feed.FeedViewModel
+import com.ns.daggernewway.ui.main.feed.FeedViewModelFactory
 import dagger.Module
 import dagger.Provides
 
@@ -24,15 +23,6 @@ class FeedFragmentModule {
     @FragmentScope
     fun provideFeedViewModelFactory(interactor: IGetFeedInteractor): FeedViewModelFactory {
         return FeedViewModelFactory(interactor)
-    }
-
-    class FeedViewModelFactory(private val interactor: IGetFeedInteractor) : ViewModelProvider.Factory {
-
-        @Suppress("UNCHECKED_CAST")
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            return FeedViewModel(interactor) as T
-        }
-
     }
 
 }

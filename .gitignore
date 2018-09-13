@@ -10,3 +10,5 @@
 /captures
 .externalNativeBuild
 */build
+/.idea/markdown-navigator.xml
+/.idea/markdown-navigator/

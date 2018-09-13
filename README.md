@@ -12,6 +12,7 @@ Example of usage of Dagger.Android and Architecture components
 2. [DaggerArchFragment](https://github.com/Ufkoku/Dagger2.Android-Arch.Components/blob/master/dagger2-arch-components/src/main/java/com/ufkoku/archcomponents/DaggerArchFragment.kt) same features as `AppActivity` has;
 3. `ViewModelStore` incapsulates `Map` with attached `ViewModel`s, so you we need some tools to access them, which implemented [here](https://github.com/Ufkoku/Dagger2.Android-Arch.Components/blob/master/dagger2-arch-components/src/main/java/com/ufkoku/archcomponents/ViewModelUtils.kt);
 4. And we need a `ViewModel` which saves its state, base class for it is [here](https://github.com/Ufkoku/Dagger2.Android-Arch.Components/blob/master/dagger2-arch-components/src/main/java/com/ufkoku/archcomponents/SavableViewModel.kt). It contains a `bundleSuffix` field, which should resolve bundle key conflict, if two same `ViewModel`s are attached to same anchor;
+5. Also creating `Factory` for each `ViewModel` provides some boilerplate code, so there is an AnnotationProcessor for this purpose. Usage example is [here](https://github.com/Ufkoku/Dagger2.Android-Arch.Components/blob/master/app/src/main/java/com/ns/daggernewway/ui/main/post/CommentsViewModel.kt), mark class with `GenerateFactory` and its constructors with `ConstructorPriority`.
 
 ## Dagger2 Usage Concept
 1. Each component has minimum two Dagger2 modules:
@@ -31,6 +32,8 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.ufkoku:dagger2-arch-components:1.0.2'
+    implementation 'com.ufkoku:dagger2-arch-components:1.1.2'
+    implementation 'com.ufkoku:dagger2-arch-annotations:1.1.2'
+    implementation 'com.ufkoku:dagger2-arch-processor:1.1.2'
 }
 ```

@@ -3,6 +3,8 @@ package com.ns.daggernewway.ui.main.post
 import android.os.Bundle
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.ns.archcomponents.annotations.ConstructorPriority
+import com.ns.archcomponents.annotations.GenerateFactory
 import com.ns.daggernewway.entity.rest.Comment
 import com.ns.daggernewway.entity.ui.FullPost
 import com.ns.daggernewway.interactor.getcomments.IGetCommentsInteractor
@@ -16,6 +18,7 @@ import kotlinx.coroutines.experimental.launch
 import kotlinx.coroutines.experimental.withContext
 import java.io.IOException
 
+@GenerateFactory
 @AutoSavable(includeSuper = false)
 class CommentsViewModel : SavableViewModel {
 
@@ -31,12 +34,14 @@ class CommentsViewModel : SavableViewModel {
     @DontSave
     private var loadJob: Job? = null
 
+    @ConstructorPriority(1)
     constructor(interactor: IGetCommentsInteractor,
                 post: FullPost) : super() {
         this.interactor = interactor
         this.post = post
     }
 
+    @ConstructorPriority(0)
     constructor(interactor: IGetCommentsInteractor,
                 savedInstanceState: Bundle) : super(savedInstanceState) {
         this.interactor = interactor

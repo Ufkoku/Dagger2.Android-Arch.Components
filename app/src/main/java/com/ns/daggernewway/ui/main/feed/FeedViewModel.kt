@@ -3,6 +3,7 @@ package com.ns.daggernewway.ui.main.feed
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.ns.archcomponents.annotations.GenerateFactory
 import com.ns.daggernewway.entity.ui.FullPost
 import com.ns.daggernewway.interactor.getfeed.IGetFeedInteractor
 import kotlinx.coroutines.experimental.CommonPool
@@ -12,6 +13,7 @@ import kotlinx.coroutines.experimental.launch
 import kotlinx.coroutines.experimental.withContext
 import java.io.IOException
 
+@GenerateFactory
 class FeedViewModel(private val interactor: IGetFeedInteractor) : ViewModel() {
 
     private lateinit var feed: MutableLiveData<List<FullPost>>
