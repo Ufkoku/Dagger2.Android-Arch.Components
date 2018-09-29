@@ -1,6 +1,7 @@
 package com.ns.archcomponents
 
 import com.ns.archcomponents.annotations.ConstructorPriority
+import com.ns.archcomponents.annotations.Name
 import com.squareup.javapoet.*
 import org.jetbrains.annotations.Nullable
 import java.util.*
@@ -106,7 +107,7 @@ class ViewModelFactoryProcessor : AbstractProcessor() {
         arguments.forEach {
             val fieldSpec = FieldSpec.builder(
                     TypeName.get(it.type),
-                    it.element.simpleName.toString(),
+                    it.element.getName(),
                     Modifier.FINAL, Modifier.PRIVATE)
                     .run {
                         addAnnotation(Nullable::class.java)
@@ -148,17 +149,19 @@ class ViewModelFactoryProcessor : AbstractProcessor() {
             val constructorArgs = StringBuilder()
 
             constructorData.element.parameters.forEachIndexed { argIndex, argItem ->
+                val name = argItem.getName()
+
                 if (argItem.getAnnotation(Nullable::class.java) == null) {
                     if (ifStatementBuilder.isNotEmpty()) {
                         ifStatementBuilder.append(" && ")
                     }
-                    ifStatementBuilder.append("this.${argItem.simpleName} != null")
+                    ifStatementBuilder.append("this.$name != null")
                 }
 
                 if (argIndex != 0) {
                     constructorArgs.append(", ")
                 }
-                constructorArgs.append(argItem.simpleName)
+                constructorArgs.append(name)
             }
 
             if (constructorIndex == 0) {
@@ -195,7 +198,7 @@ class ViewModelFactoryProcessor : AbstractProcessor() {
 
     private fun extractArguments(list: List<ConstructorData>): Set<ArgumentData> {
         return list.fold(TreeSet { t1: ArgumentData, t2: ArgumentData ->
-            t1.element.simpleName.toString().compareTo(t2.element.simpleName.toString())
+            t1.element.getName().compareTo(t2.element.getName())
         }) { accumulator, item ->
             item.element.parameters
                     .forEachIndexed { index, variableElement ->
@@ -228,6 +231,11 @@ class ViewModelFactoryProcessor : AbstractProcessor() {
 
     private fun printMessage(kind: Diagnostic.Kind, message: CharSequence) {
         processingEnv.messager.printMessage(kind, message)
+    }
+
+    private fun VariableElement.getName(): String {
+        val nameAnnotation = this.getAnnotation(Name::class.java)
+        return nameAnnotation?.name ?: this.simpleName.toString()
     }
 
     private data class ConstructorData(val priority: Int,
