@@ -10,7 +10,7 @@ import javax.inject.Inject
 
 abstract class DaggerArchFragment : Fragment(), HasSupportFragmentInjector {
 
-    protected var savedInstanceState: Bundle? = null
+    var savedInstanceState: Bundle? = null
         private set
 
     @Inject

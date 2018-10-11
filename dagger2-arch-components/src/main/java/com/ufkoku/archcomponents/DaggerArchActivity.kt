@@ -11,7 +11,7 @@ import javax.inject.Inject
 
 abstract class DaggerArchActivity : AppCompatActivity(), HasSupportFragmentInjector {
 
-    protected var savedInstanceState: Bundle? = null
+    var savedInstanceState: Bundle? = null
         private set
 
     @Inject
