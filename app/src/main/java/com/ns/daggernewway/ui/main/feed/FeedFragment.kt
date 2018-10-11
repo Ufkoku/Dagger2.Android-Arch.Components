@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.ns.daggernewway.R
 import com.ns.daggernewway.entity.ui.FullPost
 import com.ns.daggernewway.ui.main.post.PostCommentsFragment
@@ -30,7 +31,7 @@ class FeedFragment : DaggerArchFragment(), OnItemClickListener<FullPost> {
 
         adapter = FeedAdapter(layoutInflater, this)
         feed.adapter = adapter
-        feed.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        feed.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
 
         viewModel.getFeed().observe(viewLifecycleOwner, Observer {
             adapter!!.postItems(it)
