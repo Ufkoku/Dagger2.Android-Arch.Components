@@ -110,13 +110,17 @@ class ViewModelFactoryProcessor : AbstractProcessor() {
                     it.element.getName(),
                     Modifier.FINAL, Modifier.PRIVATE)
                     .run {
-                        addAnnotation(Nullable::class.java)
+                        if (!it.type.kind.isPrimitive) {
+                            addAnnotation(Nullable::class.java)
+                        }
                         build()
                     }
 
             val parameterSpec = ParameterSpec.builder(fieldSpec.type, fieldSpec.name)
                     .run {
-                        addAnnotation(Nullable::class.java)
+                        if (!it.type.kind.isPrimitive) {
+                            addAnnotation(Nullable::class.java)
+                        }
                         build()
                     }
 
@@ -143,6 +147,8 @@ class ViewModelFactoryProcessor : AbstractProcessor() {
                 .addParameter(ParameterizedTypeName.get(ClassName.get(Class::class.java), typeParameter), "modelClass")
                 .returns(TypeVariableName.get(CREATE_TYPE))
 
+        var defaultConstructorIndex = -1
+
         val methodBody = CodeBlock.builder()
         constructors.forEachIndexed { constructorIndex, constructorData ->
             val ifStatementBuilder = StringBuilder()
@@ -151,7 +157,8 @@ class ViewModelFactoryProcessor : AbstractProcessor() {
             constructorData.element.parameters.forEachIndexed { argIndex, argItem ->
                 val name = argItem.getName()
 
-                if (argItem.getAnnotation(Nullable::class.java) == null) {
+                if (argItem.getAnnotation(Nullable::class.java) == null
+                        && !argItem.asType().kind.isPrimitive) {
                     if (ifStatementBuilder.isNotEmpty()) {
                         ifStatementBuilder.append(" && ")
                     }
@@ -164,17 +171,30 @@ class ViewModelFactoryProcessor : AbstractProcessor() {
                 constructorArgs.append(name)
             }
 
-            if (constructorIndex == 0) {
-                methodBody.beginControlFlow("if ($ifStatementBuilder)")
-            } else {
-                methodBody.nextControlFlow("else if ($ifStatementBuilder)")
+            if (defaultConstructorIndex == -1) {
+                if (ifStatementBuilder.isNotEmpty()) {
+                    if (constructorIndex == 0) {
+                        methodBody.beginControlFlow("if ($ifStatementBuilder)")
+                    } else {
+                        methodBody.nextControlFlow("else if ($ifStatementBuilder)")
+                    }
+                } else {
+                    defaultConstructorIndex = constructorIndex
+                    if (defaultConstructorIndex != 0) {
+                        methodBody.nextControlFlow("else")
+                    }
+                }
+                methodBody.addStatement("return (\$L) new \$T(\$L)", CREATE_TYPE, declaredType, constructorArgs)
             }
-
-            methodBody.addStatement("return (\$L) new \$T(\$L)", CREATE_TYPE, declaredType, constructorArgs)
         }
-        methodBody.nextControlFlow(" else ")
-        methodBody.addStatement("throw new \$T(\"Unable to initialize ViewModel\")", IllegalArgumentException::class.java)
-        methodBody.endControlFlow()
+
+        if (defaultConstructorIndex != 0) {
+            if (defaultConstructorIndex == -1) {
+                methodBody.nextControlFlow(" else ")
+                methodBody.addStatement("throw new \$T(\"Unable to initialize ViewModel\")", IllegalArgumentException::class.java)
+            }
+            methodBody.endControlFlow()
+        }
 
         createMethodSpecBuilder.addCode(methodBody.build())
 
