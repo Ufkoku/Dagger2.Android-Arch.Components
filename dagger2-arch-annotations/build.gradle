@@ -11,7 +11,7 @@ ext {
 
     libraryDescription = 'Contains annotations for architecture implementation'
 
-    siteUrl = gitUrl
+    siteUrl = siteUrl
     gitUrl = gitUrl
 
     libraryVersion = version_name
