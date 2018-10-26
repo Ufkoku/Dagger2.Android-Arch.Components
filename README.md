@@ -30,8 +30,8 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.ufkoku:dagger2-arch-components:1.3.3'
-    implementation 'com.ufkoku:dagger2-arch-annotations:1.3.3'
-    kapt 'com.ufkoku:dagger2-arch-processor:1.3.3'
+    implementation 'com.ufkoku:dagger2-arch-components:1.3.4'
+    implementation 'com.ufkoku:dagger2-arch-annotations:1.3.4'
+    kapt 'com.ufkoku:dagger2-arch-processor:1.3.4'
 }
 ```
