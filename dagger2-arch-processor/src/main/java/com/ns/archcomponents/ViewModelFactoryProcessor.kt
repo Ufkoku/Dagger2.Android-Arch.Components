@@ -10,6 +10,7 @@ import javax.lang.model.SourceVersion
 import javax.lang.model.element.*
 import javax.lang.model.type.DeclaredType
 import javax.lang.model.type.ExecutableType
+import javax.lang.model.type.PrimitiveType
 import javax.lang.model.type.TypeMirror
 import javax.tools.Diagnostic
 
@@ -105,22 +106,24 @@ class ViewModelFactoryProcessor : AbstractProcessor() {
                 .addModifiers(Modifier.PUBLIC)
 
         arguments.forEach {
+            val type = if (it.type.kind.isPrimitive) {
+                processingEnv.typeUtils.boxedClass(it.type as PrimitiveType).asType()
+            } else {
+                it.type
+            }
+
             val fieldSpec = FieldSpec.builder(
-                    TypeName.get(it.type),
+                    TypeName.get(type),
                     it.element.getName(),
                     Modifier.FINAL, Modifier.PRIVATE)
                     .run {
-                        if (!it.type.kind.isPrimitive) {
-                            addAnnotation(Nullable::class.java)
-                        }
+                        addAnnotation(Nullable::class.java)
                         build()
                     }
 
             val parameterSpec = ParameterSpec.builder(fieldSpec.type, fieldSpec.name)
                     .run {
-                        if (!it.type.kind.isPrimitive) {
-                            addAnnotation(Nullable::class.java)
-                        }
+                        addAnnotation(Nullable::class.java)
                         build()
                     }
 
@@ -158,7 +161,7 @@ class ViewModelFactoryProcessor : AbstractProcessor() {
                 val name = argItem.getName()
 
                 if (argItem.getAnnotation(Nullable::class.java) == null
-                        && !argItem.asType().kind.isPrimitive) {
+                        || argItem.asType().kind.isPrimitive) {
                     if (ifStatementBuilder.isNotEmpty()) {
                         ifStatementBuilder.append(" && ")
                     }
