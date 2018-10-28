@@ -1,6 +1,7 @@
 package com.ns.archcomponents
 
 import com.ns.archcomponents.annotations.ConstructorPriority
+import com.ns.archcomponents.annotations.GenerateFactory
 import com.ns.archcomponents.annotations.Name
 import com.squareup.javapoet.*
 import org.jetbrains.annotations.Nullable
@@ -25,6 +26,8 @@ class ViewModelFactoryProcessor : AbstractProcessor() {
 
         private const val VIEW_MODEL_FACTORY_QUALIFIED_NAME = "androidx.lifecycle.ViewModelProvider.Factory"
 
+        private const val INJECT_QUALIFIED_NAME = "javax.inject.Inject"
+
         private const val FABRIC_SUFFIX = "Factory"
 
         private const val CREATE_METHOD_NAME = "create"
@@ -41,6 +44,8 @@ class ViewModelFactoryProcessor : AbstractProcessor() {
 
     private lateinit var tpViewModelFactory: DeclaredType
 
+    private lateinit var elInjectAnnotation: TypeElement
+
     override fun init(processingEnv: ProcessingEnvironment) {
         super.init(processingEnv)
 
@@ -49,6 +54,8 @@ class ViewModelFactoryProcessor : AbstractProcessor() {
 
         elViewModelFactory = processingEnv.elementUtils.getTypeElement(VIEW_MODEL_FACTORY_QUALIFIED_NAME)
         tpViewModelFactory = createDeclaredType(elViewModelFactory)
+
+        elInjectAnnotation = processingEnv.elementUtils.getTypeElement(INJECT_QUALIFIED_NAME)
     }
 
     override fun process(annotations: Set<TypeElement>, roundEnv: RoundEnvironment): Boolean {
@@ -85,7 +92,10 @@ class ViewModelFactoryProcessor : AbstractProcessor() {
         val constructors = collectConstructorDataSorted(typeElement, declaredType)
         val arguments = extractArguments(constructors)
 
-        fillConstructorAndFields(arguments, fabricBuilder)
+        val addInjectAnnotation =
+                typeElement.getAnnotation(GenerateFactory::class.java)?.inject ?: false
+
+        fillConstructorAndFields(arguments, fabricBuilder, addInjectAnnotation)
 
         addCreateMethod(typeElement, declaredType, constructors, fabricBuilder)
 
@@ -101,9 +111,14 @@ class ViewModelFactoryProcessor : AbstractProcessor() {
     }
 
     private fun fillConstructorAndFields(arguments: Set<ArgumentData>,
-                                         typeBuilder: TypeSpec.Builder) {
+                                         typeBuilder: TypeSpec.Builder,
+                                         addInjectAnnotation: Boolean) {
         val constructorBuilder = MethodSpec.constructorBuilder()
                 .addModifiers(Modifier.PUBLIC)
+
+        if (addInjectAnnotation) {
+            constructorBuilder.addAnnotation(ClassName.get(elInjectAnnotation))
+        }
 
         arguments.forEach {
             val type = if (it.type.kind.isPrimitive) {
@@ -136,7 +151,7 @@ class ViewModelFactoryProcessor : AbstractProcessor() {
         typeBuilder.addMethod(constructorBuilder.build())
     }
 
-    private fun addCreateMethod(typeElement: TypeElement,
+    private fun addCreateMethod(@Suppress("UNUSED_PARAMETER") typeElement: TypeElement,
                                 declaredType: DeclaredType,
                                 constructors: List<ConstructorData>,
                                 typeBuilder: TypeSpec.Builder) {

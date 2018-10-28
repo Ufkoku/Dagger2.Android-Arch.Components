@@ -13,7 +13,7 @@ import kotlinx.coroutines.experimental.launch
 import kotlinx.coroutines.experimental.withContext
 import java.io.IOException
 
-@GenerateFactory
+@GenerateFactory(inject = true)
 class FeedViewModel(private val interactor: IGetFeedInteractor) : ViewModel() {
 
     private lateinit var feed: MutableLiveData<List<FullPost>>
