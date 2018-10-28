@@ -1,12 +1,21 @@
 package com.ns.daggernewway.interactor.getcomments
 
-import com.ns.daggernewway.entity.rest.Comment
+import android.util.Log
+import com.ns.daggernewway.interactor.getcomments.IGetCommentsInteractor.GetCommentsResult
 import com.ns.daggernewway.rest.NetworkApi
+
+private const val TAG = "GetCommentsInteractor"
 
 class GetCommentsInteractor(private val networkApi: NetworkApi) : IGetCommentsInteractor {
 
-    override suspend fun getComments(postId: Int): List<Comment> {
-        return networkApi.getPostComments(postId).await()
+    override suspend fun getComments(postId: Int): GetCommentsResult {
+        return try {
+            val data = networkApi.getPostComments(postId).await()
+            GetCommentsResult(true, data)
+        } catch (ex: Throwable) {
+            Log.e(TAG, "Get comments request failed", ex)
+            GetCommentsResult(false, null)
+        }
     }
 
 }

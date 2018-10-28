@@ -1,4 +1,4 @@
-package com.ns.daggernewway.di.feed
+package com.ns.daggernewway.di.ui.main.feed
 
 import com.ns.daggernewway.di.common.scopes.FragmentScope
 import com.ns.daggernewway.di.interactor.GetFeedInteractorModule

@@ -1,14 +1,19 @@
 package com.ns.daggernewway.interactor.getfeed
 
 import com.ns.daggernewway.entity.ui.FullPost
+import com.ns.daggernewway.interactor.getfeed.IGetFeedInteractor.GetFeedResult
 import com.ns.daggernewway.rest.NetworkApi
 
 class GetFeedInteractor(private val networkApi: NetworkApi) : IGetFeedInteractor {
 
-    override suspend fun getFeed(): List<FullPost> {
-        val posts = networkApi.getPosts().await()
+    override suspend fun getFeed(): GetFeedResult {
+        val posts = try {
+            networkApi.getPosts().await()
+        } catch (ex: Throwable) {
+            return GetFeedResult(false, null)
+        }
 
-        return posts.mapNotNull { post ->
+        val fullPosts = posts.mapNotNull { post ->
             try {
                 val user = networkApi.getUser(post.userId).await()
                 FullPost(post.id, user, post.title, post.body)
@@ -16,6 +21,8 @@ class GetFeedInteractor(private val networkApi: NetworkApi) : IGetFeedInteractor
                 null
             }
         }
+
+        return GetFeedResult(true, fullPosts)
     }
 
 }

@@ -4,11 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ns.daggernewway.R
 import com.ns.daggernewway.entity.ui.FullPost
+import com.ns.daggernewway.ui.common.viewmodel.postcomments.CommentsViewModel
+import com.ns.daggernewway.ui.common.viewmodel.status.IStatus
 import com.ufkoku.archcomponents.DaggerArchFragment
 import kotlinx.android.synthetic.main.fragment_comments.*
 import javax.inject.Inject
@@ -54,7 +57,15 @@ class PostCommentsFragment : DaggerArchFragment() {
         adapter?.post = viewModel.post
 
         viewModel.getComments().observe(viewLifecycleOwner, Observer {
-            adapter?.postItems(it)
+            if (it == null) {
+                return@Observer
+            }
+
+            @Suppress("NON_EXHAUSTIVE_WHEN")
+            when(it.state){
+                IStatus.State.COMPLETED -> adapter?.postItems(it.data!!)
+                IStatus.State.ERROR -> Toast.makeText(context, it.errorMessage, Toast.LENGTH_LONG).show()
+            }
         })
     }
 

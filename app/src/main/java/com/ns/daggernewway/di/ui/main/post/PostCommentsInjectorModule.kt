@@ -1,4 +1,4 @@
-package com.ns.daggernewway.di.postcomments
+package com.ns.daggernewway.di.ui.main.post
 
 import com.ns.daggernewway.di.common.scopes.FragmentScope
 import com.ns.daggernewway.di.interactor.GetCommentsInteractorModule
