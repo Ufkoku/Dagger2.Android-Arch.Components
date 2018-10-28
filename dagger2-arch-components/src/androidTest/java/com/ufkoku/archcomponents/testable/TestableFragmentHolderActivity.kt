@@ -3,6 +3,7 @@ package com.ufkoku.archcomponents.testable
 import android.os.Bundle
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import com.ufkoku.archcomponents.DaggerArchActivity
 
@@ -29,6 +30,11 @@ class TestableFragmentHolderActivity : DaggerArchActivity() {
             return true
         }
         return false
+    }
+
+    fun setupDialog(fragment: DialogFragment): Boolean {
+        fragment.show(supportFragmentManager, "DialogTag")
+        return true
     }
 
     @Suppress("UNCHECKED_CAST")
