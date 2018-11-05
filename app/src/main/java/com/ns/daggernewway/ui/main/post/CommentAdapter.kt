@@ -105,9 +105,9 @@ class CommentAdapter(private val inflater: LayoutInflater) : RecyclerView.Adapte
 
     class PostViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-        val author: TextView by lazy { view.findViewById<TextView>(R.id.author) }
+        val author: TextView = view.findViewById(R.id.author)
 
-        val text: TextView by lazy { view.findViewById<TextView>(R.id.text) }
+        val text: TextView = view.findViewById(R.id.text)
 
         fun bind(post: FullPost) {
             author.text = post.user.name
@@ -118,9 +118,9 @@ class CommentAdapter(private val inflater: LayoutInflater) : RecyclerView.Adapte
 
     class CommentViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-        val author: TextView by lazy { view.findViewById<TextView>(R.id.author) }
+        val author: TextView = view.findViewById(R.id.author)
 
-        val text: TextView by lazy { view.findViewById<TextView>(R.id.text) }
+        val text: TextView = view.findViewById(R.id.text)
 
         fun bind(comment: Comment) {
             author.text = comment.name

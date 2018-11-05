@@ -40,7 +40,7 @@ class CommentsViewModel : SavableViewModel {
 
     @ConstructorPriority(0)
     constructor(interactor: IGetCommentsInteractor,
-                savedInstanceState: Bundle) : super(savedInstanceState) {
+                savedInstanceState: Bundle) : super(savedInstanceState = savedInstanceState) {
         this.interactor = interactor
     }
 

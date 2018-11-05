@@ -37,9 +37,9 @@ class FeedAdapter(private val inflater: LayoutInflater,
 
     inner class PostViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-        private val author: TextView by lazy { view.findViewById<TextView>(R.id.author) }
+        private val author: TextView = view.findViewById(R.id.author)
 
-        private val text: TextView by lazy { view.findViewById<TextView>(R.id.text) }
+        private val text: TextView = view.findViewById(R.id.text)
 
         private lateinit var binded: FullPost
 

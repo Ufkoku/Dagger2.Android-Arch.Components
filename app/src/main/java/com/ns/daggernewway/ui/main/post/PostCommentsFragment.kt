@@ -34,7 +34,7 @@ class PostCommentsFragment : DaggerArchFragment() {
 
     }
 
-    val fullPost: FullPost? by lazy {
+    val fullPost: FullPost? by lazy(LazyThreadSafetyMode.NONE) {
         arguments?.getParcelable<FullPost>(ARG_POST)
     }
 
