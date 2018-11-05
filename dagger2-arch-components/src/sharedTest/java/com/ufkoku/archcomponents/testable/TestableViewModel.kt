@@ -15,7 +15,7 @@ class TestableViewModel : SavableViewModel {
         this.data = data
     }
 
-    constructor(suffix: String = "", savedInstance: Bundle) : super(savedInstance, suffix)
+    constructor(suffix: String = "", savedInstance: Bundle) : super(suffix, savedInstance)
 
     override fun saveInner(bundle: Bundle) {
         bundle.putString(KEY_DATA, data)

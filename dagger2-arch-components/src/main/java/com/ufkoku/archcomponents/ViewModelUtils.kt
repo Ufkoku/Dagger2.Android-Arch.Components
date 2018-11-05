@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModelStore
 import androidx.lifecycle.ViewModelStoreOwner
 import java.lang.reflect.Field
 
-private val fViewModelMap: Field by lazy {
+private val fViewModelMap: Field by lazy(LazyThreadSafetyMode.NONE) {
     ViewModelStore::class.java
             .declaredFields
             .first { Map::class.java.isAssignableFrom(it.type) }
