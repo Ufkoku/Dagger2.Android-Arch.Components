@@ -34,4 +34,8 @@ dependencies {
     implementation 'com.ufkoku:dagger2-arch-annotations:1.5.5'
     kapt 'com.ufkoku:dagger2-arch-processor:1.5.5'
 }
+
+kapt {
+    correctErrorTypes = true
+}
 ```
