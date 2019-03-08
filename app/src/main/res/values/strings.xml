@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">DaggerNewWay</string>
+
+    <string name="app.error.general">Unknown error occurred</string>
 </resources>

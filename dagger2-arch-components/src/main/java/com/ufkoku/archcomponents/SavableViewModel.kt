@@ -3,10 +3,12 @@ package com.ufkoku.archcomponents
 import android.os.Bundle
 import androidx.lifecycle.ViewModel
 
-private const val DEFAULT_SUFFIX = ""
-
 @Suppress("CanBePrimaryConstructorProperty")
 abstract class SavableViewModel(bundleSuffix: String = DEFAULT_SUFFIX) : ViewModel() {
+
+    companion object {
+        const val DEFAULT_SUFFIX = ""
+    }
 
     /**
      * Allows you to use two models of same instance attached to single component

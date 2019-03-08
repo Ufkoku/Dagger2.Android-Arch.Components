@@ -5,21 +5,24 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.ns.daggernewway.R
-import com.ns.daggernewway.entity.ui.FullPost
+import com.ns.daggernewway.domain.ui.entity.Post
 import com.ns.daggernewway.ui.utils.recyclerview.OnItemClickListener
-import java.util.*
 
 class FeedAdapter(private val inflater: LayoutInflater,
-                  private val onItemClickListener: OnItemClickListener<FullPost>) : RecyclerView.Adapter<FeedAdapter.PostViewHolder>() {
+                  private val onItemClickListener: OnItemClickListener<Post>)
+    : ListAdapter<Post, FeedAdapter.PostViewHolder>(DIFF_CALLBACK) {
 
-    private var items: List<FullPost> = Collections.emptyList()
+    companion object {
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Post>() {
+            override fun areItemsTheSame(oldItem: Post, newItem: Post): Boolean =
+                    oldItem.id == newItem.id
 
-    fun postItems(new: List<FullPost>) {
-        val result = DiffUtil.calculateDiff(DiffCallback(items, new))
-        items = ArrayList(new)
-        result.dispatchUpdatesTo(this)
+            override fun areContentsTheSame(oldItem: Post, newItem: Post): Boolean =
+                    oldItem == newItem
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
@@ -28,11 +31,7 @@ class FeedAdapter(private val inflater: LayoutInflater,
     }
 
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
-        return holder.bind(items[position])
-    }
-
-    override fun getItemCount(): Int {
-        return items.size
+        return holder.bind(getItem(position))
     }
 
     inner class PostViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -41,42 +40,19 @@ class FeedAdapter(private val inflater: LayoutInflater,
 
         private val text: TextView = view.findViewById(R.id.text)
 
-        private lateinit var binded: FullPost
+        private lateinit var binded: Post
 
         init {
             view.setOnClickListener {
-                if (::binded.isInitialized) {
-                    onItemClickListener.onItemClicked(binded)
-                }
+                onItemClickListener.onItemClicked(binded)
             }
         }
 
-        fun bind(post: FullPost) {
+        fun bind(post: Post) {
             binded = post
 
-            author.text = post.user.name
+            author.text = post.user.email
             text.text = post.body
-        }
-
-    }
-
-    private class DiffCallback(private val oldList: List<FullPost>,
-                               private val newList: List<FullPost>) : DiffUtil.Callback() {
-
-        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            return oldList[oldItemPosition].id == newList[newItemPosition].id
-        }
-
-        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            return oldList[oldItemPosition] == newList[newItemPosition]
-        }
-
-        override fun getOldListSize(): Int {
-            return oldList.size
-        }
-
-        override fun getNewListSize(): Int {
-            return newList.size
         }
 
     }

@@ -1,23 +1,34 @@
 package com.ns.daggernewway.ui.main.activity
 
 import android.os.Bundle
+import android.view.MenuItem
 import com.ns.daggernewway.R
-import com.ns.daggernewway.ui.main.feed.FeedFragment
+import com.ns.daggernewway.ui.main.activity.router.IMainActivityRouter
 import com.ufkoku.archcomponents.DaggerArchActivity
-import kotlinx.android.synthetic.main.activity_main.*
+import javax.inject.Inject
+
 
 class MainActivity : DaggerArchActivity() {
+
+    @Inject
+    protected lateinit var router: IMainActivityRouter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         if (savedInstanceState == null) {
-            supportFragmentManager.beginTransaction()
-                    .replace(mainRoot.id, FeedFragment())
-                    .commit()
+            router.moveToStart()
         }
-
     }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean =
+            when (item.itemId) {
+                android.R.id.home -> {
+                    onBackPressed()
+                    true
+                }
+                else -> super.onOptionsItemSelected(item)
+            }
 
 }

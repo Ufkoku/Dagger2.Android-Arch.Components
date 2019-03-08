@@ -38,15 +38,17 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlin_coroutines_version"
 
     implementation "androidx.appcompat:appcompat:$androidx_app_compat_version"
-    implementation "androidx.recyclerview:recyclerview:$androidx_app_compat_version"
+    implementation "androidx.recyclerview:recyclerview:$androidx_recyclerview_version"
 
     implementation "androidx.lifecycle:lifecycle-extensions:$androidx_lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-common-java8:$androidx_lifecycle_version"
 
-    def retrofit_ver = "2.4.0"
-    implementation "com.squareup.retrofit2:retrofit:$retrofit_ver"
-    implementation "com.squareup.retrofit2:converter-gson:$retrofit_ver"
-    implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-experimental-adapter:$retrofit_coroutines_adapter_version"
+    implementation "androidx.fragment:fragment-ktx:$androidx_fragment_ktx_version"
+
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+    implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:$retrofit_coroutines_adapter_version"
 
     implementation "com.google.dagger:dagger:$dagger_version"
     implementation "com.google.dagger:dagger-android-support:$dagger_version"

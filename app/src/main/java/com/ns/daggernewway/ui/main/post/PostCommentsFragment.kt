@@ -9,9 +9,10 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ns.daggernewway.R
-import com.ns.daggernewway.entity.ui.FullPost
-import com.ns.daggernewway.ui.common.viewmodel.postcomments.CommentsViewModel
-import com.ns.daggernewway.ui.common.viewmodel.status.IStatus
+import com.ns.daggernewway.domain.ui.entity.Post
+import com.ns.daggernewway.ui.common.viewmodel.status.GeneralFlowStatus
+import com.ns.daggernewway.ui.main.post.viewmodel.ICommentsViewModel
+import com.ns.daggernewway.util.fLazy
 import com.ufkoku.archcomponents.DaggerArchFragment
 import kotlinx.android.synthetic.main.fragment_comments.*
 import javax.inject.Inject
@@ -20,9 +21,11 @@ class PostCommentsFragment : DaggerArchFragment() {
 
     companion object {
 
-        private const val ARG_POST = "PostCommentsFragment.FullPost"
+        const val TAG = "PostCommentsFragment"
 
-        fun getInstance(post: FullPost): PostCommentsFragment {
+        private const val ARG_POST = "PostCommentsFragment.Post"
+
+        fun getInstance(post: Post): PostCommentsFragment {
             val instance = PostCommentsFragment()
 
             val args = Bundle()
@@ -34,37 +37,36 @@ class PostCommentsFragment : DaggerArchFragment() {
 
     }
 
-    val fullPost: FullPost? by lazy(LazyThreadSafetyMode.NONE) {
-        arguments?.getParcelable<FullPost>(ARG_POST)
-    }
+    val post: Post by fLazy { arguments?.getParcelable<Post>(ARG_POST)!! }
 
     @Inject
-    protected lateinit var viewModel: CommentsViewModel
+    protected lateinit var viewModel: ICommentsViewModel
 
-    private var adapter: CommentAdapter? = null
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_comments, container, false)
-    }
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
+            inflater.inflate(R.layout.fragment_comments, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter = CommentAdapter(layoutInflater)
+        swipeRefresh.setOnRefreshListener { viewModel.refreshData() }
+
+        val adapter = CommentAdapter(layoutInflater)
         comments.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         comments.adapter = adapter
 
-        adapter?.post = viewModel.post
+        adapter.submitItems(post, null)
 
-        viewModel.getComments().observe(viewLifecycleOwner, Observer {
-            if (it == null) {
-                return@Observer
-            }
+        viewModel.comments.observe(viewLifecycleOwner, Observer { adapter.submitItems(post, it) })
 
-            @Suppress("NON_EXHAUSTIVE_WHEN")
-            when(it.state){
-                IStatus.State.COMPLETED -> adapter?.postItems(it.data!!)
-                IStatus.State.ERROR -> Toast.makeText(context, it.errorMessage, Toast.LENGTH_LONG).show()
+        viewModel.commentsLoadStatus.observe(viewLifecycleOwner, Observer {
+            when (it) {
+                GeneralFlowStatus.IDLE -> swipeRefresh.isRefreshing = false
+                GeneralFlowStatus.IN_PROGRESS -> swipeRefresh.isRefreshing = true
+                GeneralFlowStatus.COMPLETED -> viewModel.moveLoadStatusToIdle()
+                GeneralFlowStatus.FAILED -> {
+                    Toast.makeText(context!!, R.string.app_error_general, Toast.LENGTH_LONG).show()
+                    viewModel.moveLoadStatusToIdle()
+                }
             }
         })
     }

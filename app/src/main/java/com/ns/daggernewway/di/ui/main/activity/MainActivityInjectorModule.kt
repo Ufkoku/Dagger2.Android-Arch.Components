@@ -11,7 +11,11 @@ import dagger.android.ContributesAndroidInjector
 abstract class MainActivityInjectorModule {
 
     @ActivityScope
-    @ContributesAndroidInjector(modules = [FeedFragmentInjectorModule::class, PostCommentsInjectorModule::class])
+    @ContributesAndroidInjector(
+            modules = [
+                MainActivityRouterModule::class,
+                FeedFragmentInjectorModule::class,
+                PostCommentsInjectorModule::class])
     abstract fun mainActivity(): MainActivity
 
 }

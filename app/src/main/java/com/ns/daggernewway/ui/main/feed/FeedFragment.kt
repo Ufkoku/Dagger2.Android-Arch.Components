@@ -9,56 +9,64 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ns.daggernewway.R
-import com.ns.daggernewway.entity.ui.FullPost
-import com.ns.daggernewway.ui.common.viewmodel.getfeed.FeedViewModel
-import com.ns.daggernewway.ui.common.viewmodel.status.IStatus.State
-import com.ns.daggernewway.ui.main.post.PostCommentsFragment
+import com.ns.daggernewway.domain.ui.entity.Post
+import com.ns.daggernewway.ui.common.viewmodel.status.GeneralFlowStatus
+import com.ns.daggernewway.ui.main.feed.viewmodel.IFeedViewModel
 import com.ns.daggernewway.ui.utils.recyclerview.OnItemClickListener
 import com.ufkoku.archcomponents.DaggerArchFragment
 import kotlinx.android.synthetic.main.fragment_feed.*
 import javax.inject.Inject
 
-class FeedFragment : DaggerArchFragment(), OnItemClickListener<FullPost> {
+class FeedFragment : DaggerArchFragment(), OnItemClickListener<Post> {
+
+    companion object {
+
+        const val TAG = "FeedFragment"
+
+        fun getInstance(): FeedFragment = FeedFragment()
+
+    }
 
     @Inject
-    protected lateinit var viewModel: FeedViewModel
+    protected lateinit var viewModel: IFeedViewModel
 
-    private var adapter: FeedAdapter? = null
+    @Inject
+    protected lateinit var router: Router
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_feed, container, false)
-    }
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
+            inflater.inflate(R.layout.fragment_feed, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter = FeedAdapter(layoutInflater, this)
+        swipeRefresh.setOnRefreshListener { viewModel.refreshData() }
+
+        val adapter = FeedAdapter(layoutInflater, this)
         feed.adapter = adapter
         feed.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
 
-        viewModel.getFeed().observe(viewLifecycleOwner, Observer {
-            if (it == null){
-                return@Observer
-            }
+        viewModel.feed.observe(viewLifecycleOwner, Observer { adapter.submitList(it) })
 
-            @Suppress("NON_EXHAUSTIVE_WHEN")
-            when(it.state){
-                State.COMPLETED -> adapter!!.postItems(it.data!!)
-                State.ERROR -> Toast.makeText(context, it.errorMessage, Toast.LENGTH_LONG).show()
+        viewModel.feedLoadStatus.observe(viewLifecycleOwner, Observer {
+            when (it) {
+                GeneralFlowStatus.IDLE -> swipeRefresh.isRefreshing = false
+                GeneralFlowStatus.IN_PROGRESS -> swipeRefresh.isRefreshing = true
+                GeneralFlowStatus.COMPLETED -> viewModel.moveLoadStatusToIdle()
+                GeneralFlowStatus.FAILED -> {
+                    Toast.makeText(context!!, R.string.app_error_general, Toast.LENGTH_LONG).show()
+                    viewModel.moveLoadStatusToIdle()
+                }
             }
         })
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        adapter = null
-    }
+    override fun onItemClicked(item: Post) =
+            router.moveToPostComments(item)
 
-    override fun onItemClicked(item: FullPost) {
-        fragmentManager?.beginTransaction()
-                ?.replace(R.id.mainRoot, PostCommentsFragment.getInstance(item))
-                ?.addToBackStack(null)
-                ?.commit()
+    interface Router {
+
+        fun moveToPostComments(post: Post)
+
     }
 
 }

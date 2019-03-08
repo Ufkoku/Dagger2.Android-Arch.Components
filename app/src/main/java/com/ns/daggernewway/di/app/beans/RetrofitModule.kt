@@ -1,7 +1,7 @@
 package com.ns.daggernewway.di.app.beans
 
-import com.jakewharton.retrofit2.adapter.kotlin.coroutines.experimental.CoroutineCallAdapterFactory
-import com.ns.daggernewway.rest.NetworkApi
+import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
+import com.ns.daggernewway.domain.rest.NetworkApi
 import dagger.Module
 import dagger.Provides
 import dagger.Reusable
