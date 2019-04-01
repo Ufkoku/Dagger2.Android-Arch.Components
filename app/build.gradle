@@ -42,6 +42,7 @@ dependencies {
 
     implementation "androidx.lifecycle:lifecycle-extensions:$androidx_lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-common-java8:$androidx_lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:$androidx_savedstate_version"
 
     implementation "androidx.fragment:fragment-ktx:$androidx_fragment_ktx_version"
 

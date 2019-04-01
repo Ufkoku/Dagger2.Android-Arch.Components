@@ -10,15 +10,14 @@ Example of usage of Dagger.Android and Architecture components
 ## Main classes and key parts  
 1. [DaggerArchActivity](https://github.com/Ufkoku/Dagger2.Android-Arch.Components/blob/master/dagger2-arch-components/src/main/java/com/ufkoku/archcomponents/DaggerArchActivity.kt) which is base class for activities in the app. It saves provided `savedInstanceState` to use it for `ViewModel` initialization. Also it implements Dagger2.Android injections. And uses its `ViewModelStore` to save attached `ViewModel`s to Bundle;
 2. [DaggerArchFragment](https://github.com/Ufkoku/Dagger2.Android-Arch.Components/blob/master/dagger2-arch-components/src/main/java/com/ufkoku/archcomponents/DaggerArchFragment.kt) same features as `DaggerArchActivity` has;
-3. `ViewModelStore` incapsulates `Map` with attached `ViewModel`s, so you we need some tools to access them, which implemented [here](https://github.com/Ufkoku/Dagger2.Android-Arch.Components/blob/master/dagger2-arch-components/src/main/java/com/ufkoku/archcomponents/ViewModelUtils.kt);
-4. And we need a `ViewModel` which saves its state, base class for it is [here](https://github.com/Ufkoku/Dagger2.Android-Arch.Components/blob/master/dagger2-arch-components/src/main/java/com/ufkoku/archcomponents/SavableViewModel.kt). It contains a `bundleSuffix` field, which should resolve bundle key conflict, if two same `ViewModel`s are attached to same anchor;
-5. Also creating `Factory` for each `ViewModel` provides some boilerplate code, so there is an AnnotationProcessor for this purpose. Usage examples are [here](https://github.com/Ufkoku/Dagger2.Android-Arch.Components/blob/master/app/src/main/java/com/ns/daggernewway/ui/main/feed/viewmodel/FeedViewModel.kt) and [here](https://github.com/Ufkoku/Dagger2.Android-Arch.Components/blob/master/app/src/main/java/com/ns/daggernewway/ui/main/post/viewmodel/CommentsViewModel.kt). Mark class with `GenerateFactory` and its constructors with `ConstructorPriority`, if needed.
+3. [DaggerArchDialogFragment](https://github.com/Ufkoku/Dagger2.Android-Arch.Components/blob/master/dagger2-arch-components/src/main/java/com/ufkoku/archcomponents/DaggerArchDialogFragment.kt) same features as `DaggerArchActivity` has;
+4. Creating `Factory` for each `ViewModel` provides some boilerplate code, so there is an AnnotationProcessor for this purpose. Usage examples are [here](https://github.com/Ufkoku/Dagger2.Android-Arch.Components/blob/master/app/src/main/java/com/ns/daggernewway/ui/main/feed/viewmodel/FeedViewModel.kt) and [here](https://github.com/Ufkoku/Dagger2.Android-Arch.Components/blob/master/app/src/main/java/com/ns/daggernewway/ui/main/post/viewmodel/CommentsViewModel.kt). Mark class with `GenerateFactory` and its constructors with `ConstructorPriority`, if needed.
 
 ## Dagger2 Usage Concept
 1. Each component has minimum two Dagger2 modules:
     * The [first one](https://github.com/Ufkoku/Dagger2.Android-Arch.Components/blob/master/app/src/main/java/com/ns/daggernewway/di/ui/main/post/PostCommentsInjectorModule.kt) for subcomponent generation;
     * [Other](https://github.com/Ufkoku/Dagger2.Android-Arch.Components/blob/master/app/src/main/java/com/ns/daggernewway/di/ui/main/post/PostCommentsModule.kt) for dependencies providing;
-2. For `ViewModel` initialization from parameters or saved state, you need to provide them some how. Define public fields for arguments in classes, and use them inside Dagger2 modules.
+2. For `ViewModel` initialization from parameters or saved state, you need to provide them some how. Define public fields or methods for arguments in classes, and use them inside Dagger2 modules.
 
 ## Usage as library
 
@@ -30,9 +29,10 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.ufkoku:dagger2-arch-components:1.5.6'
-    implementation 'com.ufkoku:dagger2-arch-annotations:1.5.6'
-    kapt 'com.ufkoku:dagger2-arch-processor:1.5.6'
+    def ver_dagger_arch_components = "2.0.0"
+    implementation "com.ufkoku:dagger2-arch-components:$ver_dagger_arch_components"
+    implementation "com.ufkoku:dagger2-arch-annotations:$ver_dagger_arch_components"
+    kapt "com.ufkoku:dagger2-arch-processor:1.5.6"
 }
 
 kapt {

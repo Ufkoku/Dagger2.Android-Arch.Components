@@ -25,7 +25,7 @@ class PostCommentsModule {
     @FragmentScope
     fun providePostCommentsViewModelFactory(fragment: PostCommentsFragment,
                                             useCase: IGetCommentsUseCase): CommentsViewModelFactory {
-        return CommentsViewModelFactory(fragment.post.id, fragment.savedInstanceState, useCase)
+        return CommentsViewModelFactory(fragment, fragment.getPostFromArgs(), useCase)
     }
 
 }

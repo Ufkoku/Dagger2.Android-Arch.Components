@@ -12,7 +12,6 @@ import com.ns.daggernewway.R
 import com.ns.daggernewway.domain.ui.entity.Post
 import com.ns.daggernewway.ui.common.viewmodel.status.GeneralFlowStatus
 import com.ns.daggernewway.ui.main.post.viewmodel.ICommentsViewModel
-import com.ns.daggernewway.util.fLazy
 import com.ufkoku.archcomponents.DaggerArchFragment
 import kotlinx.android.synthetic.main.fragment_comments.*
 import javax.inject.Inject
@@ -37,8 +36,6 @@ class PostCommentsFragment : DaggerArchFragment() {
 
     }
 
-    val post: Post by fLazy { arguments?.getParcelable<Post>(ARG_POST)!! }
-
     @Inject
     protected lateinit var viewModel: ICommentsViewModel
 
@@ -54,9 +51,7 @@ class PostCommentsFragment : DaggerArchFragment() {
         comments.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         comments.adapter = adapter
 
-        adapter.submitItems(post, null)
-
-        viewModel.comments.observe(viewLifecycleOwner, Observer { adapter.submitItems(post, it) })
+        viewModel.accumulatedData.observe(viewLifecycleOwner, Observer { adapter.submitItems(it.post, it.comments) })
 
         viewModel.commentsLoadStatus.observe(viewLifecycleOwner, Observer {
             when (it) {
@@ -70,5 +65,7 @@ class PostCommentsFragment : DaggerArchFragment() {
             }
         })
     }
+
+    fun getPostFromArgs() = arguments?.getParcelable<Post>(ARG_POST)
 
 }

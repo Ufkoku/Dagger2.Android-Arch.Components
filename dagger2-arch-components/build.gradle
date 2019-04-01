@@ -33,7 +33,6 @@ android {
         targetSdkVersion Integer.parseInt(compileApiVersion)
         versionCode Integer.parseInt(version_code)
         versionName version_name
-        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
     buildTypes {
         release {
@@ -44,20 +43,6 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
-    }
-    testOptions {
-        unitTests {
-            includeAndroidResources = true
-        }
-    }
-    sourceSets {
-        String sharedTestDir = 'src/sharedTest/java'
-        test {
-            java.srcDir sharedTestDir
-        }
-        androidTest {
-            java.srcDir sharedTestDir
-        }
     }
 }
 
@@ -70,27 +55,6 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel:$androidx_lifecycle_version"
 
     implementation "com.google.dagger:dagger-android-support:$dagger_version"
-
-    //instrumentations test dependencies
-
-    androidTestImplementation "androidx.annotation:annotation:$androidx_annotations_version"
-
-    androidTestImplementation "androidx.test:runner:$androidx_instrumentation_test_version"
-    androidTestImplementation "androidx.test:rules:$androidx_instrumentation_test_version"
-
-    androidTestImplementation "androidx.lifecycle:lifecycle-extensions:$androidx_lifecycle_version"
-
-    androidTestImplementation "com.google.dagger:dagger:$dagger_version"
-    kaptAndroidTest "com.google.dagger:dagger-android-processor:$dagger_version"
-    kaptAndroidTest "com.google.dagger:dagger-compiler:$dagger_version"
-
-    //Test dependencies
-
-    testImplementation "junit:junit:$junit_version"
-
-    testImplementation "org.robolectric:robolectric:$robolectric_version"
-
-    testImplementation "org.mockito:mockito-core:$mockito_version"
 }
 
 apply from: '../installv1.gradle'
