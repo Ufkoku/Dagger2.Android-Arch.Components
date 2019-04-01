@@ -32,7 +32,7 @@ dependencies {
     def ver_dagger_arch_components = "2.0.0"
     implementation "com.ufkoku:dagger2-arch-components:$ver_dagger_arch_components"
     implementation "com.ufkoku:dagger2-arch-annotations:$ver_dagger_arch_components"
-    kapt "com.ufkoku:dagger2-arch-processor:1.5.6"
+    kapt "com.ufkoku:dagger2-arch-processor:$ver_dagger_arch_components"
 }
 
 kapt {
