@@ -49,11 +49,15 @@ class ViewModelFactoryProcessor : AbstractProcessor() {
 
     }
 
+    private var enabled: Boolean = false
+
     private lateinit var elViewModel: TypeElement
     private lateinit var tpViewModel: DeclaredType
 
     private lateinit var elViewModelFactory: TypeElement
     private lateinit var tpViewModelFactory: DeclaredType
+
+    private var savedStateEnabled: Boolean = false
 
     private lateinit var elSavedStateViewModelFactory: TypeElement
     private lateinit var tpSavedStateViewModelFactory: DeclaredType
@@ -64,31 +68,53 @@ class ViewModelFactoryProcessor : AbstractProcessor() {
     private lateinit var elSavedStateRegistryOwner: TypeElement
     private lateinit var tpSavedStateRegistryOwner: DeclaredType
 
+    private var injectEnabled: Boolean = false
+
     private lateinit var elInjectAnnotation: TypeElement
 
     override fun init(processingEnv: ProcessingEnvironment) {
         super.init(processingEnv)
 
-        elViewModel = processingEnv.elementUtils.getTypeElement(VIEW_MODEL_QUALIFIED_NAME)
-        tpViewModel = createDeclaredType(elViewModel)
+        try {
+            elViewModel = processingEnv.elementUtils.getTypeElement(VIEW_MODEL_QUALIFIED_NAME)
+            tpViewModel = createDeclaredType(elViewModel)
 
-        elViewModelFactory = processingEnv.elementUtils.getTypeElement(VIEW_MODEL_FACTORY_QUALIFIED_NAME)
-        tpViewModelFactory = createDeclaredType(elViewModelFactory)
+            elViewModelFactory = processingEnv.elementUtils.getTypeElement(VIEW_MODEL_FACTORY_QUALIFIED_NAME)
+            tpViewModelFactory = createDeclaredType(elViewModelFactory)
 
-        elSavedStateViewModelFactory = processingEnv.elementUtils.getTypeElement(VIEW_MODEL_SAVED_STATE_FACTORY_QUALIFIED_NAME)
-        tpSavedStateViewModelFactory = createDeclaredType(elSavedStateViewModelFactory)
+            enabled = true
+        } catch (ex: Exception) {
+            enabled = false
+            printMessage(Diagnostic.Kind.ERROR, "Failed to resolve ViewModel dependencies")
+        }
 
-        elSavedStateHandle = processingEnv.elementUtils.getTypeElement(SAVED_STATE_HANDLE_QUALIFIED_NAME)
-        tpSavedStateHandle = createDeclaredType(elSavedStateHandle)
+        try {
+            elSavedStateViewModelFactory = processingEnv.elementUtils.getTypeElement(VIEW_MODEL_SAVED_STATE_FACTORY_QUALIFIED_NAME)
+            tpSavedStateViewModelFactory = createDeclaredType(elSavedStateViewModelFactory)
 
-        elSavedStateRegistryOwner = processingEnv.elementUtils.getTypeElement(SAVED_STATE_REGISTRY_OWNER_QUALIFIED_NAME)
-        tpSavedStateRegistryOwner = createDeclaredType(elSavedStateRegistryOwner)
+            elSavedStateHandle = processingEnv.elementUtils.getTypeElement(SAVED_STATE_HANDLE_QUALIFIED_NAME)
+            tpSavedStateHandle = createDeclaredType(elSavedStateHandle)
 
-        elInjectAnnotation = processingEnv.elementUtils.getTypeElement(INJECT_QUALIFIED_NAME)
+            elSavedStateRegistryOwner = processingEnv.elementUtils.getTypeElement(SAVED_STATE_REGISTRY_OWNER_QUALIFIED_NAME)
+            tpSavedStateRegistryOwner = createDeclaredType(elSavedStateRegistryOwner)
+
+            savedStateEnabled = true
+        } catch (ex: Exception) {
+            savedStateEnabled = false
+            printMessage(Diagnostic.Kind.WARNING, "Failed to resolve SavedState dependencies")
+        }
+
+        try {
+            elInjectAnnotation = processingEnv.elementUtils.getTypeElement(INJECT_QUALIFIED_NAME)
+            injectEnabled = true
+        } catch (ex: Exception) {
+            injectEnabled = false
+            printMessage(Diagnostic.Kind.WARNING, "Failed to resolve Inject annotation")
+        }
     }
 
     override fun process(annotations: Set<TypeElement>, roundEnv: RoundEnvironment): Boolean {
-        if (annotations.isNotEmpty()) {
+        if (enabled && annotations.isNotEmpty()) {
             for (annotation in annotations) {
                 val elements = roundEnv.getElementsAnnotatedWith(annotation)
                 for (element in elements) {
@@ -184,7 +210,7 @@ class ViewModelFactoryProcessor : AbstractProcessor() {
                     .sorted()
 
     private fun isSavedStateVm(constructors: List<ConstructorData>) =
-            constructors.firstOrNull { constructor ->
+            savedStateEnabled && constructors.firstOrNull { constructor ->
                 constructor.type.parameterTypes.firstOrNull {
                     processingEnv.typeUtils.isAssignable(it, tpSavedStateHandle)
                 } != null
@@ -224,7 +250,7 @@ class ViewModelFactoryProcessor : AbstractProcessor() {
         val savedSet = TreeSet<IArgumentData> { t1, t2 -> t1.name.compareTo(t2.name) }
 
         list.flatMap { it.params }
-                .filter { arg -> !processingEnv.typeUtils.isAssignable(arg.type, tpSavedStateHandle) }
+                .filter { arg -> !savedStateEnabled || !processingEnv.typeUtils.isAssignable(arg.type, tpSavedStateHandle) }
                 .forEach {
                     val saved = savedMap[it.name]
                     if (saved != null && !processingEnv.typeUtils.isSameType(it.type, saved.type)) {
@@ -247,11 +273,11 @@ class ViewModelFactoryProcessor : AbstractProcessor() {
         val constructorBuilder = MethodSpec.constructorBuilder()
                 .addModifiers(Modifier.PUBLIC)
 
-        if (addInjectAnnotation) {
+        if (injectEnabled && addInjectAnnotation) {
             constructorBuilder.addAnnotation(ClassName.get(elInjectAnnotation))
         }
 
-        if (superTypeIsSavedStateVmFactory) {
+        if (savedStateEnabled && superTypeIsSavedStateVmFactory) {
             val savableStateRegistryOwner = TypeArgumentData(elSavedStateRegistryOwner, tpSavedStateRegistryOwner)
 
             usedArgsMap[savableStateRegistryOwner.name] = savableStateRegistryOwner
@@ -343,7 +369,7 @@ class ViewModelFactoryProcessor : AbstractProcessor() {
                 .addTypeVariable(typeParameter)
                 .returns(TypeVariableName.get(CREATE_TYPE))
 
-        if (superTypeIsSavedStateVmFactory) {
+        if (savedStateEnabled && superTypeIsSavedStateVmFactory) {
             createMethodSpecBuilder.addParameter(TypeName.get(String::class.java), CREATE_METHOD_KEY_ARG)
             createMethodSpecBuilder.addParameter(
                     ParameterizedTypeName.get(ClassName.get(Class::class.java), typeParameter),
@@ -368,7 +394,7 @@ class ViewModelFactoryProcessor : AbstractProcessor() {
                     constructorArgs.append(", ")
                 }
 
-                if (processingEnv.typeUtils.isAssignable(arg.type, tpSavedStateHandle)) {
+                if (savedStateEnabled && processingEnv.typeUtils.isAssignable(arg.type, tpSavedStateHandle)) {
                     constructorArgs.append(CREATE_SAVED_STATE_HANDLE_ARG)
                 } else {
                     if (arg.type.getAnnotation(Nullable::class.java) == null
