@@ -16,7 +16,7 @@ Example of usage of Dagger.Android and Architecture components
 ## Dagger2 Usage Concept
 1. Each component has minimum two Dagger2 modules:
     * The [first one](https://github.com/Ufkoku/Dagger2.Android-Arch.Components/blob/master/app/src/main/java/com/ufkoku/daggernewway/di/ui/main/post/PostCommentsInjectorModule.kt) for subcomponent generation;
-    * [Other](https://github.com/Ufkoku/Dagger2.Android-Arch.Components/blob/master/app/src/main/java/com/ufkoku/daggernewway/di/ui/main/post/PostCommentsModule.kt) for dependencies providing;
+    * [Other](https://github.com/Ufkoku/Dagger2.Android-Arch.Components/blob/master/app/src/main/java/com/ufkoku/daggernewway/di/ui/main/post/PostCommentsFragmentModule.kt) for dependencies providing;
 2. For `ViewModel` initialization from parameters or saved state, you need to provide them some how. Define public fields or methods for arguments in classes, and use them inside Dagger2 modules.
 
 ## Usage as library
@@ -29,7 +29,7 @@ repositories {
 }
 
 dependencies {
-    def ver_dagger_arch_components = "2.1.0"
+    def ver_dagger_arch_components = "2.1.1"
     implementation "com.ufkoku:dagger2-arch-components:$ver_dagger_arch_components"
     compileOnly "com.ufkoku:dagger2-arch-annotations:$ver_dagger_arch_components"
     kapt "com.ufkoku:dagger2-arch-processor:$ver_dagger_arch_components"

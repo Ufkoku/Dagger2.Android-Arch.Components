@@ -12,7 +12,7 @@ import dagger.Module
 import dagger.Provides
 
 @Module(includes = [GetCommentsUseCaseModule::class])
-class PostCommentsModule {
+class PostCommentsFragmentModule {
 
     @Provides
     @FragmentScope

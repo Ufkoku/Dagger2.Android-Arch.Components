@@ -9,7 +9,7 @@ import dagger.android.ContributesAndroidInjector
 abstract class PostCommentsInjectorModule {
 
     @FragmentScope
-    @ContributesAndroidInjector(modules = [PostCommentsModule::class])
+    @ContributesAndroidInjector(modules = [PostCommentsFragmentModule::class])
     abstract fun postCommentsFragment(): PostCommentsFragment
 
 }

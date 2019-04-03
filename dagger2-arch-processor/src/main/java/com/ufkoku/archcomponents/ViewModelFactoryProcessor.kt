@@ -487,7 +487,7 @@ class ViewModelFactoryProcessor : AbstractProcessor() {
 
             //if priority is same sort by args count
             if (priorityComparision == 0) {
-                return Integer.compare(params.size, other.params.size)
+                return Integer.compare(other.params.size, params.size)
             }
 
             return priorityComparision
