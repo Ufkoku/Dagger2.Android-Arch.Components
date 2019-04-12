@@ -8,9 +8,9 @@ Example of usage of Dagger.Android and Architecture components
 3. Totally incapsulate `ViewModel` managment logic from final Activity/Fragment.
 
 ## Main classes and key parts  
-1. [DaggerArchActivity](https://github.com/Ufkoku/Dagger2.Android-Arch.Components/blob/master/dagger2-arch-components/src/main/java/com/ufkoku/archcomponents/DaggerArchActivity.kt) which is base class for activities in the app. It saves provided `savedInstanceState` to use it for `ViewModel` initialization. Also it implements Dagger2.Android injections. And uses its `ViewModelStore` to save attached `ViewModel`s to Bundle;
-2. [DaggerArchFragment](https://github.com/Ufkoku/Dagger2.Android-Arch.Components/blob/master/dagger2-arch-components/src/main/java/com/ufkoku/archcomponents/DaggerArchFragment.kt) same features as `DaggerArchActivity` has;
-3. [DaggerArchDialogFragment](https://github.com/Ufkoku/Dagger2.Android-Arch.Components/blob/master/dagger2-arch-components/src/main/java/com/ufkoku/archcomponents/DaggerArchDialogFragment.kt) same features as `DaggerArchActivity` has;
+1. [DaggerArchActivity](https://github.com/Ufkoku/Dagger2.Android-Arch.Components/blob/master/dagger2-arch-components/src/main/java/com/ufkoku/archcomponents/DaggerArchActivity.kt) which is base class for activities in the app. It implements Dagger2.Android injections;
+2. [DaggerArchFragment](https://github.com/Ufkoku/Dagger2.Android-Arch.Components/blob/master/dagger2-arch-components/src/main/java/com/ufkoku/archcomponents/DaggerArchFragment.kt);
+3. [DaggerArchDialogFragment](https://github.com/Ufkoku/Dagger2.Android-Arch.Components/blob/master/dagger2-arch-components/src/main/java/com/ufkoku/archcomponents/DaggerArchDialogFragment.kt);
 4. Creating `Factory` for each `ViewModel` provides some boilerplate code, so there is an AnnotationProcessor for this purpose. Usage examples are [here](https://github.com/Ufkoku/Dagger2.Android-Arch.Components/blob/master/app/src/main/java/com/ufkoku/daggernewway/ui/main/feed/viewmodel/FeedViewModel.kt) and [here](https://github.com/Ufkoku/Dagger2.Android-Arch.Components/blob/master/app/src/main/java/com/ufkoku/daggernewway/ui/main/post/viewmodel/CommentsViewModel.kt). Mark class with `GenerateFactory` and its constructors with `ConstructorPriority`, if needed.
 
 ## Dagger2 Usage Concept
