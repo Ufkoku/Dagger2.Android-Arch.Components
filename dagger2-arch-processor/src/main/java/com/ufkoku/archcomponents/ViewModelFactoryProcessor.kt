@@ -29,7 +29,7 @@ class ViewModelFactoryProcessor : AbstractProcessor() {
 
         private const val VIEW_MODEL_FACTORY_QUALIFIED_NAME = "androidx.lifecycle.ViewModelProvider.Factory"
 
-        private const val VIEW_MODEL_SAVED_STATE_FACTORY_QUALIFIED_NAME = "androidx.lifecycle.AbstractSavedStateVMFactory"
+        private const val VIEW_MODEL_SAVED_STATE_FACTORY_QUALIFIED_NAME = "androidx.lifecycle.AbstractSavedStateViewModelFactory"
 
         private const val SAVED_STATE_HANDLE_QUALIFIED_NAME = "androidx.lifecycle.SavedStateHandle"
 

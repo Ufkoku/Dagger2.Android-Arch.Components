@@ -1,18 +1,20 @@
 package com.ufkoku.daggernewway.ui.main.feed.viewmodel
 
 import androidx.lifecycle.MutableLiveData
-import com.ufkoku.archcomponents.annotations.GenerateFactory
+import androidx.lifecycle.viewModelScope
+import com.ufkoku.archcomponents.DaggerViewModel
 import com.ufkoku.daggernewway.domain.ui.entity.Post
-import com.ufkoku.daggernewway.ui.base.viewmodel.BaseCoroutineViewModel
 import com.ufkoku.daggernewway.ui.common.viewmodel.status.GeneralFlowStatus
 import com.ufkoku.daggernewway.usecase.getfeed.IGetFeedUseCase
+import dagger.android.HasAndroidInjector
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-@GenerateFactory(inject = true)
-class FeedViewModel(private val useCase: IGetFeedUseCase) : BaseCoroutineViewModel(), IFeedViewModel {
+class FeedViewModel(hasAndroidInjector: HasAndroidInjector)
+    : DaggerViewModel(hasAndroidInjector), IFeedViewModel {
 
     override val feedLoadStatus = MutableLiveData<GeneralFlowStatus>()
 
@@ -30,6 +32,9 @@ class FeedViewModel(private val useCase: IGetFeedUseCase) : BaseCoroutineViewMod
 
     }
 
+    @Inject
+    protected lateinit var useCase: IGetFeedUseCase
+
     private var loadFeedJob: Job? = null
 
     override fun moveLoadStatusToIdle() {
@@ -40,11 +45,9 @@ class FeedViewModel(private val useCase: IGetFeedUseCase) : BaseCoroutineViewMod
 
     private fun loadFeed() {
         if (loadFeedJob?.isActive == true) return
-        loadFeedJob = launch {
+        loadFeedJob = viewModelScope.launch {
             feedLoadStatus.value = GeneralFlowStatus.IN_PROGRESS
-
-            val result = withContext(Dispatchers.IO) { useCase.getFeed() }
-            when (result) {
+            when (val result = withContext(Dispatchers.IO) { useCase.getFeed() }) {
 
                 is IGetFeedUseCase.GetFeedResult.Success -> {
                     feedLoadStatus.value = GeneralFlowStatus.COMPLETED

@@ -53,6 +53,7 @@ dependencies {
     implementation "androidx.appcompat:appcompat:$androidx_app_compat_version"
 
     implementation "androidx.lifecycle:lifecycle-viewmodel:$androidx_lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:$androidx_savedstate_version"
 
     implementation "com.google.dagger:dagger-android-support:$dagger_version"
 }
