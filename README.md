@@ -13,7 +13,7 @@ Example of usage of Dagger.Android and Architecture components
 3. [DaggerArchDialogFragment](https://github.com/Ufkoku/Dagger2.Android-Arch.Components/blob/master/dagger2-arch-components/src/main/java/com/ufkoku/archcomponents/DaggerArchDialogFragment.kt) same features as `DaggerArchActivity` has;
 4. [DaggerViewModel](https://github.com/Ufkoku/Dagger2.Android-Arch.Components/blob/master/dagger2-arch-components/src/main/java/com/ufkoku/archcomponents/DaggerViewModel.kt) which provides `Factory` and supports injections via `AndroidInjector`;
 5. [DaggerSavableViewModel](https://github.com/Ufkoku/Dagger2.Android-Arch.Components/blob/master/dagger2-arch-components/src/main/java/com/ufkoku/archcomponents/DaggerSavableViewModel.kt) which provides `Factory`, supports injections via `AndroidInjector` and accepts `SavedStateHandle` as the second argument of constructor;
-6. Creating `Factory` for each `ViewModel` provides some boilerplate code, so there is an AnnotationProcessor for this purpose. Usage examples are [here](https://github.com/Ufkoku/Dagger2.Android-Arch.Components/blob/master/app/src/main/java/com/ufkoku/daggernewway/ui/main/feed/viewmodel/FeedViewModel.kt) and [here](https://github.com/Ufkoku/Dagger2.Android-Arch.Components/blob/master/app/src/main/java/com/ufkoku/daggernewway/ui/main/post/viewmodel/CommentsViewModel.kt). Mark class with `GenerateFactory` and its constructors with `ConstructorPriority`, if needed.
+6. Creating `Factory` for each `ViewModel` provides some boilerplate code, so there is an AnnotationProcessor for this purpose. Mark class with `GenerateFactory` and its constructors with `ConstructorPriority`, if needed.
 
 ## Usage as library
 
