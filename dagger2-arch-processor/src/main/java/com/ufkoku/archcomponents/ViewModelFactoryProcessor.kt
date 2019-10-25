@@ -134,7 +134,7 @@ class ViewModelFactoryProcessor : AbstractProcessor() {
                         }
                     } else {
                         printMessage(
-                                Diagnostic.Kind.WARNING,
+                                Diagnostic.Kind.ERROR,
                                 "Factory won't be generated for ${element.qualifiedName}, because it is abstract or not an instance of androidx.lifecycle.ViewModel")
                     }
                 }

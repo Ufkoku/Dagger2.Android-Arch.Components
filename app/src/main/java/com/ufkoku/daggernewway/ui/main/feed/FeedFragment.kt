@@ -48,6 +48,7 @@ class FeedFragment : DaggerArchFragment(), OnItemClickListener<Post> {
         viewModel.feed.observe(viewLifecycleOwner, Observer { adapter.submitList(it) })
 
         viewModel.feedLoadStatus.observe(viewLifecycleOwner, Observer {
+            @Suppress("WHEN_ENUM_CAN_BE_NULL_IN_JAVA")
             when (it) {
                 GeneralFlowStatus.IDLE -> swipeRefresh.isRefreshing = false
                 GeneralFlowStatus.IN_PROGRESS -> swipeRefresh.isRefreshing = true

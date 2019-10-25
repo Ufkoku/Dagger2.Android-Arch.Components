@@ -2,23 +2,26 @@ package com.ufkoku.daggernewway.ui.main.post.viewmodel
 
 import android.os.Bundle
 import androidx.lifecycle.*
-import com.ufkoku.archcomponents.DaggerSavableViewModel
+import com.ufkoku.archcomponents.annotations.DefaultValuesProvider
+import com.ufkoku.archcomponents.annotations.GenerateFactory
 import com.ufkoku.daggernewway.domain.ui.entity.Comment
 import com.ufkoku.daggernewway.domain.ui.entity.Post
 import com.ufkoku.daggernewway.ui.common.viewmodel.status.GeneralFlowStatus
 import com.ufkoku.daggernewway.usecase.getcomments.IGetCommentsUseCase
-import dagger.android.HasAndroidInjector
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import javax.inject.Inject
+import kotlinx.coroutines.withContext
 
-
-class CommentsViewModel(hasAndroidInjector: HasAndroidInjector, savedStateHandle: SavedStateHandle)
-    : DaggerSavableViewModel(hasAndroidInjector, savedStateHandle), ICommentsViewModel {
+@GenerateFactory
+class CommentsViewModel(private val useCase: IGetCommentsUseCase,
+                        private val savedState: SavedStateHandle) : ViewModel(), ICommentsViewModel {
 
     companion object {
         private const val KEY_POST = "argPost"
 
+        @JvmStatic
+        @DefaultValuesProvider
         fun buildDefaultValues(post: Post?): Bundle = Bundle().apply {
             if (post != null) putParcelable(KEY_POST, post)
         }
@@ -27,7 +30,7 @@ class CommentsViewModel(hasAndroidInjector: HasAndroidInjector, savedStateHandle
 
     override val commentsLoadStatus = MutableLiveData<GeneralFlowStatus>()
 
-    override val post: LiveData<Post> = savedStateHandle.getLiveData<Post>(KEY_POST)
+    override val post: LiveData<Post> = savedState.getLiveData<Post>(KEY_POST)
 
     override val comments = object : MutableLiveData<List<Comment>>() {
 
@@ -47,11 +50,8 @@ class CommentsViewModel(hasAndroidInjector: HasAndroidInjector, savedStateHandle
         addSource(comments) { value = ICommentsViewModel.AccumulatedData(value?.post, it) }
     }
 
-    @Inject
-    protected lateinit var useCase: IGetCommentsUseCase
-
     private val postId: Int
-        get() = savedStateHandle.get<Post>(KEY_POST)!!.id
+        get() = savedState.get<Post>(KEY_POST)!!.id
 
     private var loadJob: Job? = null
 
@@ -64,7 +64,8 @@ class CommentsViewModel(hasAndroidInjector: HasAndroidInjector, savedStateHandle
     private fun loadComments() {
         if (loadJob?.isActive == true) return
         loadJob = viewModelScope.launch {
-            when (val result = useCase.getComments(postId)) {
+            val result = withContext(Dispatchers.IO) { useCase.getComments(postId) }
+            when (result) {
                 is IGetCommentsUseCase.GetCommentsResult.Success -> {
                     commentsLoadStatus.value = GeneralFlowStatus.COMPLETED
                     comments.value = result.data

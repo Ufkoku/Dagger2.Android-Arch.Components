@@ -54,6 +54,7 @@ class PostCommentsFragment : DaggerArchFragment() {
         viewModel.accumulatedData.observe(viewLifecycleOwner, Observer { adapter.submitItems(it.post, it.comments) })
 
         viewModel.commentsLoadStatus.observe(viewLifecycleOwner, Observer {
+            @Suppress("WHEN_ENUM_CAN_BE_NULL_IN_JAVA")
             when (it) {
                 GeneralFlowStatus.IDLE -> swipeRefresh.isRefreshing = false
                 GeneralFlowStatus.IN_PROGRESS -> swipeRefresh.isRefreshing = true

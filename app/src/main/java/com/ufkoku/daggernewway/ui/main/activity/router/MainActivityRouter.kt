@@ -1,6 +1,6 @@
 package com.ufkoku.daggernewway.ui.main.activity.router
 
-import androidx.fragment.app.transaction
+import androidx.fragment.app.commit
 import com.ufkoku.daggernewway.R
 import com.ufkoku.daggernewway.domain.ui.entity.Post
 import com.ufkoku.daggernewway.ui.main.activity.MainActivity
@@ -18,11 +18,11 @@ class MainActivityRouter(private val activity: MainActivity) : IMainActivityRout
         }
     }
 
-    override fun moveToStart() = activity.supportFragmentManager.transaction {
+    override fun moveToStart() = activity.supportFragmentManager.commit {
         replace(R.id.mainRoot, FeedFragment.getInstance(), FeedFragment.TAG)
     }
 
-    override fun moveToPostComments(post: Post) = activity.supportFragmentManager.transaction {
+    override fun moveToPostComments(post: Post) = activity.supportFragmentManager.commit {
         replace(R.id.mainRoot, PostCommentsFragment.getInstance(post), PostCommentsFragment.TAG)
         addToBackStack(PostCommentsFragment.TAG)
     }

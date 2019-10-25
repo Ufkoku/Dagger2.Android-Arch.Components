@@ -8,10 +8,10 @@ class GetCommentsUseCase(private val networkApi: NetworkApi,
                          private val commentsMapper: ICommentMapper) : IGetCommentsUseCase {
 
     override suspend fun getComments(postId: Int): GetCommentsResult {
-        return try {
-            val data = networkApi.getPostComments(postId).await()
-            GetCommentsResult.Success(data.map { commentsMapper.mapRestComment(it) })
-        } catch (ex: Throwable) {
+        val result = runCatching { networkApi.getPostComments(postId) }
+        return if (result.isSuccess) {
+            GetCommentsResult.Success(result.getOrThrow().map { commentsMapper.mapRestComment(it) })
+        } else {
             GetCommentsResult.Failed
         }
     }

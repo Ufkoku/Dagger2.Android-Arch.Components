@@ -1,6 +1,5 @@
 package com.ufkoku.daggernewway.di.app.beans
 
-import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.ufkoku.daggernewway.domain.rest.NetworkApi
 import dagger.Module
 import dagger.Provides
@@ -16,12 +15,10 @@ class RetrofitModule {
     @Provides
     @Singleton
     fun provideRetrofit(okHttpClient: OkHttpClient,
-                        gsonConverterFactory: GsonConverterFactory,
-                        callAdapterFactory: CoroutineCallAdapterFactory): Retrofit {
+                        gsonConverterFactory: GsonConverterFactory): Retrofit {
         return Retrofit.Builder()
                 .baseUrl("https://jsonplaceholder.typicode.com")
                 .addConverterFactory(gsonConverterFactory)
-                .addCallAdapterFactory(callAdapterFactory)
                 .client(okHttpClient)
                 .build()
     }
@@ -36,12 +33,6 @@ class RetrofitModule {
     @Reusable
     fun provideGsonConverterFactory(): GsonConverterFactory {
         return GsonConverterFactory.create()
-    }
-
-    @Provides
-    @Reusable
-    fun provideKotlinCoroutineCallAdapterFactory(): CoroutineCallAdapterFactory {
-        return CoroutineCallAdapterFactory()
     }
 
 }
