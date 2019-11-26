@@ -397,7 +397,7 @@ class ViewModelFactoryProcessor : AbstractProcessor() {
                 if (savedStateEnabled && processingEnv.typeUtils.isAssignable(arg.type, tpSavedStateHandle)) {
                     constructorArgs.append(CREATE_SAVED_STATE_HANDLE_ARG)
                 } else {
-                    if (arg.type.getAnnotation(Nullable::class.java) == null
+                    if (arg.element.getAnnotation(Nullable::class.java) == null
                             || arg.type.kind.isPrimitive) {
                         if (ifStatementBuilder.isNotEmpty()) {
                             ifStatementBuilder.append(" && ")
@@ -487,7 +487,7 @@ class ViewModelFactoryProcessor : AbstractProcessor() {
 
             //if priority is same sort by args count
             if (priorityComparision == 0) {
-                return Integer.compare(other.params.size, params.size)
+                return other.params.size.compareTo(params.size)
             }
 
             return priorityComparision
@@ -501,10 +501,11 @@ class ViewModelFactoryProcessor : AbstractProcessor() {
 
     private interface IArgumentData {
         val name: String
+        val element: Element
         val type: TypeMirror
     }
 
-    private data class VariableArgumentData(val element: VariableElement,
+    private data class VariableArgumentData(override val element: VariableElement,
                                             override val type: TypeMirror) : IArgumentData {
 
         override val name: String = element.getVariableName()
@@ -516,7 +517,8 @@ class ViewModelFactoryProcessor : AbstractProcessor() {
 
     }
 
-    private data class TypeArgumentData(val element: TypeElement, override val type: DeclaredType) : IArgumentData {
+    private data class TypeArgumentData(override val element: TypeElement,
+                                        override val type: DeclaredType) : IArgumentData {
 
         override val name: String = element.simpleName.toString().decapitalize()
 

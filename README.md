@@ -25,7 +25,7 @@ repositories {
 }
 
 dependencies {
-    def ver_dagger_arch_components = "2.3.0"
+    def ver_dagger_arch_components = "2.3.1"
     implementation "com.ufkoku:dagger2-arch-components:$ver_dagger_arch_components"
     
     //optional if you want to use factories instead of injection to `ViewModel` 
