@@ -25,6 +25,9 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
 }
 
 dependencies {
@@ -38,16 +41,19 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlin_coroutines_version"
 
     implementation "androidx.appcompat:appcompat:$androidx_app_compat_version"
+
     implementation "androidx.recyclerview:recyclerview:$androidx_recyclerview_version"
+
     implementation "androidx.activity:activity:$androidx_activity_version"
-    implementation "androidx.fragment:fragment:$androidx_fragment_version"
+
+    implementation "androidx.fragment:fragment-ktx:$androidx_fragment_version"
+
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:$androidx_swiperefresh_version"
 
     implementation "androidx.lifecycle:lifecycle-extensions:$androidx_lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-common-java8:$androidx_lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:$androidx_savedstate_version"
-
-    implementation "androidx.fragment:fragment-ktx:$androidx_fragment_ktx_version"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$androidx_viewmodel_ktx_version"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$androidx_lifecycle_version"
 
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"

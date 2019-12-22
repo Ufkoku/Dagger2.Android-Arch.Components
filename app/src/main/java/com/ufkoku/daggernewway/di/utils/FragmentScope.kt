@@ -1,4 +1,4 @@
-package com.ufkoku.daggernewway.di.common.scopes
+package com.ufkoku.daggernewway.di.utils
 
 import javax.inject.Scope
 

@@ -1,8 +1,7 @@
 package com.ufkoku.daggernewway.di.ui.main.post
 
 import androidx.lifecycle.ViewModelProviders
-import com.ufkoku.daggernewway.di.common.scopes.FragmentScope
-import com.ufkoku.daggernewway.di.usecase.GetCommentsUseCaseModule
+import com.ufkoku.daggernewway.di.utils.FragmentScope
 import com.ufkoku.daggernewway.ui.main.post.PostCommentsFragment
 import com.ufkoku.daggernewway.ui.main.post.viewmodel.CommentsViewModel
 import com.ufkoku.daggernewway.ui.main.post.viewmodel.CommentsViewModelFactory
@@ -11,7 +10,7 @@ import com.ufkoku.daggernewway.usecase.getcomments.IGetCommentsUseCase
 import dagger.Module
 import dagger.Provides
 
-@Module(includes = [GetCommentsUseCaseModule::class])
+@Module
 class PostCommentsFragmentModule {
 
     @Provides

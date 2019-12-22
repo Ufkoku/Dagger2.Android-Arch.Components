@@ -1,7 +1,7 @@
 package com.ufkoku.daggernewway
 
-import com.ufkoku.daggernewway.di.app.DaggerAppComponent
-import com.ufkoku.daggernewway.di.app.beans.AppModule
+import com.ufkoku.daggernewway.di.AppModule
+import com.ufkoku.daggernewway.di.DaggerAppComponent
 import dagger.android.AndroidInjector
 import dagger.android.support.DaggerApplication
 

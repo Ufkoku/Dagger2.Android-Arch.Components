@@ -1,4 +1,4 @@
-package com.ufkoku.daggernewway.di.app.beans
+package com.ufkoku.daggernewway.di.domain
 
 import com.ufkoku.daggernewway.domain.rest.NetworkApi
 import dagger.Module

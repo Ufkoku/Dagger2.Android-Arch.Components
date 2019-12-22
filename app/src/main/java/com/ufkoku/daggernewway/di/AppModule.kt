@@ -1,4 +1,4 @@
-package com.ufkoku.daggernewway.di.app.beans
+package com.ufkoku.daggernewway.di
 
 import com.ufkoku.daggernewway.App
 import dagger.Module
