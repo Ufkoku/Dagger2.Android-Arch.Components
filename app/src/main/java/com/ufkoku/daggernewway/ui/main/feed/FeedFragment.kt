@@ -12,8 +12,8 @@ import com.ufkoku.archcomponents.DaggerArchFragment
 import com.ufkoku.daggernewway.R
 import com.ufkoku.daggernewway.domain.ui.entity.Post
 import com.ufkoku.daggernewway.ui.common.viewmodel.status.GeneralFlowStatus
-import com.ufkoku.daggernewway.ui.main.feed.viewmodel.IFeedViewModel
-import com.ufkoku.daggernewway.ui.utils.recyclerview.OnItemClickListener
+import com.ufkoku.daggernewway.ui.main.feed.viewmodel.FeedViewModel
+import com.ufkoku.daggernewway.util.OnItemClickListener
 import kotlinx.android.synthetic.main.fragment_feed.*
 import javax.inject.Inject
 
@@ -28,7 +28,7 @@ class FeedFragment : DaggerArchFragment(), OnItemClickListener<Post> {
     }
 
     @Inject
-    protected lateinit var viewModel: IFeedViewModel
+    protected lateinit var viewModel: FeedViewModel
 
     @Inject
     protected lateinit var router: Router

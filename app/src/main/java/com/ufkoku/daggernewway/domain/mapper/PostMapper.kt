@@ -1,11 +1,16 @@
-package com.ufkoku.daggernewway.domain.mapper.post
+package com.ufkoku.daggernewway.domain.mapper
 
-import com.ufkoku.daggernewway.domain.mapper.user.IUserMapper
 import com.ufkoku.daggernewway.domain.rest.entity.RestPost
 import com.ufkoku.daggernewway.domain.rest.entity.RestUser
 import com.ufkoku.daggernewway.domain.ui.entity.Post
 
-class PostMapper(private val userMapper: IUserMapper) : IPostMapper {
+interface PostMapper {
+
+    fun mapRestPost(post: RestPost, user: RestUser): Post
+
+}
+
+class PostMapperImpl(private val userMapper: IUserMapper) : PostMapper {
 
     override fun mapRestPost(post: RestPost, user: RestUser): Post =
             Post(post.id,

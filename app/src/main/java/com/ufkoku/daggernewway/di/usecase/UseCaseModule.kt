@@ -1,12 +1,12 @@
 package com.ufkoku.daggernewway.di.usecase
 
-import com.ufkoku.daggernewway.domain.mapper.comment.ICommentMapper
-import com.ufkoku.daggernewway.domain.mapper.post.IPostMapper
+import com.ufkoku.daggernewway.domain.mapper.CommentMapper
+import com.ufkoku.daggernewway.domain.mapper.PostMapper
 import com.ufkoku.daggernewway.domain.rest.NetworkApi
-import com.ufkoku.daggernewway.usecase.getcomments.GetCommentsUseCase
-import com.ufkoku.daggernewway.usecase.getcomments.IGetCommentsUseCase
-import com.ufkoku.daggernewway.usecase.getfeed.GetFeedUseCase
-import com.ufkoku.daggernewway.usecase.getfeed.IGetFeedUseCase
+import com.ufkoku.daggernewway.usecase.GetCommentsUseCase
+import com.ufkoku.daggernewway.usecase.GetCommentsUseCaseImpl
+import com.ufkoku.daggernewway.usecase.GetFeedUseCase
+import com.ufkoku.daggernewway.usecase.GetFeedUseCaseImpl
 import dagger.Module
 import dagger.Provides
 
@@ -15,14 +15,14 @@ class UseCaseModule {
 
     @Provides
     fun provideGetCommentsInteractor(networkApi: NetworkApi,
-                                     commentsMapper: ICommentMapper): IGetCommentsUseCase {
-        return GetCommentsUseCase(networkApi, commentsMapper)
+                                     commentsMapper: CommentMapper): GetCommentsUseCase {
+        return GetCommentsUseCaseImpl(networkApi, commentsMapper)
     }
 
     @Provides
     fun provideGetFeedInteractor(networkApi: NetworkApi,
-                                 postMapper: IPostMapper): IGetFeedUseCase {
-        return GetFeedUseCase(networkApi, postMapper)
+                                 postMapper: PostMapper): GetFeedUseCase {
+        return GetFeedUseCaseImpl(networkApi, postMapper)
     }
 
 }

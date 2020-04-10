@@ -1,6 +1,6 @@
 package com.ufkoku.daggernewway.di.ui.main.feed.viewmodel
 
-import com.ufkoku.daggernewway.ui.main.feed.viewmodel.FeedViewModel
+import com.ufkoku.daggernewway.ui.main.feed.viewmodel.FeedViewModelImpl
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -8,6 +8,6 @@ import dagger.android.ContributesAndroidInjector
 abstract class FeedViewModelInjectorModule {
 
     @ContributesAndroidInjector
-    abstract fun feedViewModel(): FeedViewModel
+    abstract fun feedViewModel(): FeedViewModelImpl
 
 }

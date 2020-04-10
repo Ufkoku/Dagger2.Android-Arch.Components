@@ -7,7 +7,13 @@ import com.ufkoku.daggernewway.ui.main.activity.MainActivity
 import com.ufkoku.daggernewway.ui.main.feed.FeedFragment
 import com.ufkoku.daggernewway.ui.main.post.PostCommentsFragment
 
-class MainActivityRouter(private val activity: MainActivity) : IMainActivityRouter {
+interface MainActivityRouter: FeedFragment.Router {
+
+    fun moveToStart()
+
+}
+
+class MainActivityRouterImpl(private val activity: MainActivity) : MainActivityRouter {
 
     init {
         activity.supportFragmentManager.addOnBackStackChangedListener {

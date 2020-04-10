@@ -1,4 +1,4 @@
-package com.ufkoku.daggernewway.ui.utils.recyclerview
+package com.ufkoku.daggernewway.util
 
 interface OnItemClickListener<in T> {
 

@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.ufkoku.daggernewway.R
 import com.ufkoku.daggernewway.domain.ui.entity.Post
-import com.ufkoku.daggernewway.ui.utils.recyclerview.OnItemClickListener
+import com.ufkoku.daggernewway.util.OnItemClickListener
 
 class FeedAdapter(private val inflater: LayoutInflater,
                   private val onItemClickListener: OnItemClickListener<Post>)

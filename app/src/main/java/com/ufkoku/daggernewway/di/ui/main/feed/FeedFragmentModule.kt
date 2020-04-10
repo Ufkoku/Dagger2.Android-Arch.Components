@@ -5,7 +5,7 @@ import com.ufkoku.archcomponents.DaggerViewModel
 import com.ufkoku.daggernewway.di.utils.FragmentScope
 import com.ufkoku.daggernewway.ui.main.feed.FeedFragment
 import com.ufkoku.daggernewway.ui.main.feed.viewmodel.FeedViewModel
-import com.ufkoku.daggernewway.ui.main.feed.viewmodel.IFeedViewModel
+import com.ufkoku.daggernewway.ui.main.feed.viewmodel.FeedViewModelImpl
 import dagger.Module
 import dagger.Provides
 
@@ -15,8 +15,8 @@ class FeedFragmentModule {
     @Provides
     @FragmentScope
     fun provideFeedViewModel(fragment: FeedFragment,
-                             factory: DaggerViewModel.Factory): IFeedViewModel {
-        return ViewModelProviders.of(fragment, factory).get(FeedViewModel::class.java)
+                             factory: DaggerViewModel.Factory): FeedViewModel {
+        return ViewModelProviders.of(fragment, factory).get(FeedViewModelImpl::class.java)
     }
 
     @Provides

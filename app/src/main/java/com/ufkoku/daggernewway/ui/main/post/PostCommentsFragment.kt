@@ -12,7 +12,7 @@ import com.ufkoku.archcomponents.DaggerArchFragment
 import com.ufkoku.daggernewway.R
 import com.ufkoku.daggernewway.domain.ui.entity.Post
 import com.ufkoku.daggernewway.ui.common.viewmodel.status.GeneralFlowStatus
-import com.ufkoku.daggernewway.ui.main.post.viewmodel.ICommentsViewModel
+import com.ufkoku.daggernewway.ui.main.post.viewmodel.CommentsViewModel
 import kotlinx.android.synthetic.main.fragment_comments.*
 import javax.inject.Inject
 
@@ -37,7 +37,7 @@ class PostCommentsFragment : DaggerArchFragment() {
     }
 
     @Inject
-    protected lateinit var viewModel: ICommentsViewModel
+    protected lateinit var viewModel: CommentsViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
             inflater.inflate(R.layout.fragment_comments, container, false)

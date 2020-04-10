@@ -4,9 +4,9 @@ import androidx.lifecycle.ViewModelProviders
 import com.ufkoku.daggernewway.di.utils.FragmentScope
 import com.ufkoku.daggernewway.ui.main.post.PostCommentsFragment
 import com.ufkoku.daggernewway.ui.main.post.viewmodel.CommentsViewModel
-import com.ufkoku.daggernewway.ui.main.post.viewmodel.CommentsViewModelFactory
-import com.ufkoku.daggernewway.ui.main.post.viewmodel.ICommentsViewModel
-import com.ufkoku.daggernewway.usecase.getcomments.IGetCommentsUseCase
+import com.ufkoku.daggernewway.ui.main.post.viewmodel.CommentsViewModelImpl
+import com.ufkoku.daggernewway.ui.main.post.viewmodel.CommentsViewModelImplFactory
+import com.ufkoku.daggernewway.usecase.GetCommentsUseCase
 import dagger.Module
 import dagger.Provides
 
@@ -16,15 +16,15 @@ class PostCommentsFragmentModule {
     @Provides
     @FragmentScope
     fun postDetailsViewModel(fragment: PostCommentsFragment,
-                             factory: CommentsViewModelFactory): ICommentsViewModel {
-        return ViewModelProviders.of(fragment, factory).get(CommentsViewModel::class.java)
+                             factory: CommentsViewModelImplFactory): CommentsViewModel {
+        return ViewModelProviders.of(fragment, factory).get(CommentsViewModelImpl::class.java)
     }
 
     @Provides
     @FragmentScope
     fun providePostCommentsViewModelFactory(fragment: PostCommentsFragment,
-                                            useCase: IGetCommentsUseCase): CommentsViewModelFactory {
-        return CommentsViewModelFactory(fragment, fragment.getPostFromArgs(), useCase)
+                                            useCase: GetCommentsUseCase): CommentsViewModelImplFactory {
+        return CommentsViewModelImplFactory(fragment, fragment.getPostFromArgs(), useCase)
     }
 
 }

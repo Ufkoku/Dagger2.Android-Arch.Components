@@ -1,12 +1,16 @@
-package com.ufkoku.daggernewway.domain.mapper.user
+package com.ufkoku.daggernewway.domain.mapper
 
-import com.ufkoku.daggernewway.domain.mapper.address.IAddressMapper
-import com.ufkoku.daggernewway.domain.mapper.company.ICompanyMapper
 import com.ufkoku.daggernewway.domain.rest.entity.RestUser
 import com.ufkoku.daggernewway.domain.ui.entity.User
 
-class UserMapper(private val addressMapper: IAddressMapper,
-                 private val companyMapper: ICompanyMapper) : IUserMapper {
+interface IUserMapper {
+
+    fun mapRestUser(restUser: RestUser): User
+
+}
+
+class UserMapperImpl(private val addressMapper: AddressMapper,
+                     private val companyMapper: CompanyMapper) : IUserMapper {
 
     override fun mapRestUser(restUser: RestUser): User =
             User(restUser.id,

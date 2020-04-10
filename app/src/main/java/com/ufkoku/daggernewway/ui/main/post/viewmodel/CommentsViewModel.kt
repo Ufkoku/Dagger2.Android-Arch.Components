@@ -7,15 +7,33 @@ import com.ufkoku.archcomponents.annotations.GenerateFactory
 import com.ufkoku.daggernewway.domain.ui.entity.Comment
 import com.ufkoku.daggernewway.domain.ui.entity.Post
 import com.ufkoku.daggernewway.ui.common.viewmodel.status.GeneralFlowStatus
-import com.ufkoku.daggernewway.usecase.getcomments.IGetCommentsUseCase
+import com.ufkoku.daggernewway.usecase.GetCommentsUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+interface CommentsViewModel {
+
+    val commentsLoadStatus: LiveData<GeneralFlowStatus>
+
+    val post: LiveData<Post>
+
+    val comments: LiveData<List<Comment>>
+
+    val accumulatedData: LiveData<AccumulatedData>
+
+    fun refreshData()
+
+    fun moveLoadStatusToIdle()
+
+    data class AccumulatedData(val post: Post?, val comments: List<Comment>?)
+
+}
+
 @GenerateFactory
-class CommentsViewModel(private val useCase: IGetCommentsUseCase,
-                        private val savedState: SavedStateHandle) : ViewModel(), ICommentsViewModel {
+class CommentsViewModelImpl(private val useCase: GetCommentsUseCase,
+                            private val savedState: SavedStateHandle) : ViewModel(), CommentsViewModel {
 
     companion object {
         private const val KEY_POST = "argPost"
@@ -45,9 +63,9 @@ class CommentsViewModel(private val useCase: IGetCommentsUseCase,
         }
     }
 
-    override val accumulatedData = MediatorLiveData<ICommentsViewModel.AccumulatedData>().apply {
-        addSource(post) { value = ICommentsViewModel.AccumulatedData(it, value?.comments) }
-        addSource(comments) { value = ICommentsViewModel.AccumulatedData(value?.post, it) }
+    override val accumulatedData = MediatorLiveData<CommentsViewModel.AccumulatedData>().apply {
+        addSource(post) { value = CommentsViewModel.AccumulatedData(it, value?.comments) }
+        addSource(comments) { value = CommentsViewModel.AccumulatedData(value?.post, it) }
     }
 
     private val postId: Int
@@ -66,11 +84,11 @@ class CommentsViewModel(private val useCase: IGetCommentsUseCase,
         loadJob = viewModelScope.launch {
             val result = withContext(Dispatchers.IO) { useCase.getComments(postId) }
             when (result) {
-                is IGetCommentsUseCase.GetCommentsResult.Success -> {
+                is GetCommentsUseCase.GetCommentsResult.Success -> {
                     commentsLoadStatus.value = GeneralFlowStatus.COMPLETED
                     comments.value = result.data
                 }
-                is IGetCommentsUseCase.GetCommentsResult.Failed -> {
+                is GetCommentsUseCase.GetCommentsResult.Failed -> {
                     commentsLoadStatus.value = GeneralFlowStatus.FAILED
                 }
             }

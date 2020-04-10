@@ -4,14 +4,14 @@ import android.os.Bundle
 import android.view.MenuItem
 import com.ufkoku.archcomponents.DaggerArchActivity
 import com.ufkoku.daggernewway.R
-import com.ufkoku.daggernewway.ui.main.activity.router.IMainActivityRouter
+import com.ufkoku.daggernewway.ui.main.activity.router.MainActivityRouter
 import javax.inject.Inject
 
 
 class MainActivity : DaggerArchActivity() {
 
     @Inject
-    protected lateinit var router: IMainActivityRouter
+    protected lateinit var router: MainActivityRouter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

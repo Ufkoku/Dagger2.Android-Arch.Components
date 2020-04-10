@@ -1,11 +1,12 @@
 package com.ufkoku.daggernewway.ui.main.feed.viewmodel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.ufkoku.archcomponents.DaggerViewModel
 import com.ufkoku.daggernewway.domain.ui.entity.Post
 import com.ufkoku.daggernewway.ui.common.viewmodel.status.GeneralFlowStatus
-import com.ufkoku.daggernewway.usecase.getfeed.IGetFeedUseCase
+import com.ufkoku.daggernewway.usecase.GetFeedUseCase
 import dagger.android.HasAndroidInjector
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -13,8 +14,20 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class FeedViewModel(hasAndroidInjector: HasAndroidInjector)
-    : DaggerViewModel(hasAndroidInjector), IFeedViewModel {
+interface FeedViewModel {
+
+    val feedLoadStatus: LiveData<GeneralFlowStatus>
+
+    val feed: LiveData<List<Post>>
+
+    fun refreshData()
+
+    fun moveLoadStatusToIdle()
+
+}
+
+class FeedViewModelImpl(hasAndroidInjector: HasAndroidInjector)
+    : DaggerViewModel(hasAndroidInjector), FeedViewModel {
 
     override val feedLoadStatus = MutableLiveData<GeneralFlowStatus>()
 
@@ -33,7 +46,7 @@ class FeedViewModel(hasAndroidInjector: HasAndroidInjector)
     }
 
     @Inject
-    protected lateinit var useCase: IGetFeedUseCase
+    protected lateinit var useCase: GetFeedUseCase
 
     private var loadFeedJob: Job? = null
 
@@ -49,12 +62,12 @@ class FeedViewModel(hasAndroidInjector: HasAndroidInjector)
             feedLoadStatus.value = GeneralFlowStatus.IN_PROGRESS
             when (val result = withContext(Dispatchers.IO) { useCase.getFeed() }) {
 
-                is IGetFeedUseCase.GetFeedResult.Success -> {
+                is GetFeedUseCase.GetFeedResult.Success -> {
                     feedLoadStatus.value = GeneralFlowStatus.COMPLETED
                     feed.value = result.data
                 }
 
-                is IGetFeedUseCase.GetFeedResult.Failed -> {
+                is GetFeedUseCase.GetFeedResult.Failed -> {
                     feedLoadStatus.value = GeneralFlowStatus.FAILED
                 }
 

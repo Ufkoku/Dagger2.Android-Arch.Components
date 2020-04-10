@@ -1,15 +1,6 @@
 package com.ufkoku.daggernewway.di.domain
 
-import com.ufkoku.daggernewway.domain.mapper.address.AddressMapper
-import com.ufkoku.daggernewway.domain.mapper.address.IAddressMapper
-import com.ufkoku.daggernewway.domain.mapper.comment.CommentMapper
-import com.ufkoku.daggernewway.domain.mapper.comment.ICommentMapper
-import com.ufkoku.daggernewway.domain.mapper.company.CompanyMapper
-import com.ufkoku.daggernewway.domain.mapper.company.ICompanyMapper
-import com.ufkoku.daggernewway.domain.mapper.post.IPostMapper
-import com.ufkoku.daggernewway.domain.mapper.post.PostMapper
-import com.ufkoku.daggernewway.domain.mapper.user.IUserMapper
-import com.ufkoku.daggernewway.domain.mapper.user.UserMapper
+import com.ufkoku.daggernewway.domain.mapper.*
 import dagger.Module
 import dagger.Provides
 
@@ -17,21 +8,21 @@ import dagger.Provides
 class MapperModule {
 
     @Provides
-    fun provideUserMapper(addressMapper: IAddressMapper,
-                          companyMapper: ICompanyMapper): IUserMapper =
-            UserMapper(addressMapper, companyMapper)
+    fun provideUserMapper(addressMapper: AddressMapper,
+                          companyMapper: CompanyMapper): IUserMapper =
+            UserMapperImpl(addressMapper, companyMapper)
 
     @Provides
-    fun providePostMapper(userMapper: IUserMapper): IPostMapper =
-            PostMapper(userMapper)
+    fun providePostMapper(userMapper: IUserMapper): PostMapper =
+            PostMapperImpl(userMapper)
 
     @Provides
-    fun provideCompanyMapper(): ICompanyMapper = CompanyMapper()
+    fun provideCompanyMapper(): CompanyMapper = CompanyMapperImpl()
 
     @Provides
-    fun provideCommentMapper(): ICommentMapper = CommentMapper()
+    fun provideCommentMapper(): CommentMapper = CommentMapperImpl()
 
     @Provides
-    fun provideAddressMapper(): IAddressMapper = AddressMapper()
+    fun provideAddressMapper(): AddressMapper = AddressMapperImpl()
 
 }

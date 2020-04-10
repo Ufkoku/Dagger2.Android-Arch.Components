@@ -1,13 +1,26 @@
-package com.ufkoku.daggernewway.usecase.getfeed
+package com.ufkoku.daggernewway.usecase
 
-import com.ufkoku.daggernewway.domain.mapper.post.IPostMapper
+import com.ufkoku.daggernewway.domain.mapper.PostMapper
 import com.ufkoku.daggernewway.domain.rest.NetworkApi
-import com.ufkoku.daggernewway.usecase.getfeed.IGetFeedUseCase.GetFeedResult
+import com.ufkoku.daggernewway.domain.ui.entity.Post
+import com.ufkoku.daggernewway.usecase.GetFeedUseCase.GetFeedResult
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 
-class GetFeedUseCase(private val networkApi: NetworkApi,
-                     private val postMapper: IPostMapper) : IGetFeedUseCase {
+interface GetFeedUseCase {
+
+    suspend fun getFeed(): GetFeedResult
+
+    sealed class GetFeedResult {
+        class Success(val data: List<Post>) : GetFeedResult()
+
+        object Failed : GetFeedResult()
+    }
+
+}
+
+class GetFeedUseCaseImpl(private val networkApi: NetworkApi,
+                         private val postMapper: PostMapper) : GetFeedUseCase {
 
     override suspend fun getFeed(): GetFeedResult = coroutineScope {
         val posts = runCatching { networkApi.getPosts() }.let {
